@@ -38,7 +38,7 @@ const Location = () => {
 
     return (
         <div className="location-container">
-            <h1 className="location-title">찾아오시는길</h1>
+            <h1 className="location-title">찾아오시는 길</h1>
 
             <div className="kakao-map-container">
                 <div id="kakaomap" ref={mapContainerRef} className="kakao-map">

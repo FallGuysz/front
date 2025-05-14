@@ -27,9 +27,9 @@ export const AuthProvider = ({ children }) => {
                         // 백엔드 API 엔드포인트가 없으므로 로그인 시점에 user_name이 저장되도록 수정
                         console.log('API 호출 대신 로컬 저장소의 사용자 정보 확장');
 
-                        // user_name이 없는 경우 추가
-                        if (!parsedUser.user_name && parsedUser.user_email) {
-                            parsedUser.user_name = parsedUser.user_email.split('@')[0] || '사용자';
+                        // user_name이 없는 경우 기본값 추가 (이메일에서 추출하지 않음)
+                        if (!parsedUser.user_name) {
+                            parsedUser.user_name = '사용자';
                             // 로컬 스토리지 업데이트
                             localStorage.setItem('user', JSON.stringify(parsedUser));
                             console.log('사용자 정보에 기본 user_name 추가:', parsedUser);

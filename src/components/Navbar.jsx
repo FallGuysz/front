@@ -17,6 +17,9 @@ import {
     LogOut,
     User,
     LogIn,
+    Utensils,
+    Map,
+    AlertTriangle,
 } from 'lucide-react';
 import { AuthContext } from '../contexts/AuthContext';
 
@@ -27,24 +30,24 @@ const navItems = [
             { path: '/', label: '홈', icon: Home },
             { path: '/dashboard', label: '대시보드', icon: LayoutDashboard },
 
-            { path: '/fall-incidents', label: '낙상 감지', icon: Activity },
-            { path: '/environmental', label: '환경 모니터링', icon: Thermometer },
+            { path: '/fall-incidents', label: '낙상 감지', icon: AlertTriangle },
+            { path: '/environmental', label: '생활실 모니터링', icon: Thermometer },
         ],
     },
     {
-        title: '병실 관리',
+        title: '병동 관리',
         items: [
-            { path: '/rooms', label: '병실 및 환자 관리', icon: BedDouble },
-            { path: '/patients', label: '환자 목록', icon: Activity },
+            { path: '/rooms', label: '병실 관리', icon: BedDouble },
+            { path: '/patients', label: '환자 목록', icon: Users },
             { path: '/schedule', label: '일정 관리', icon: Calendar },
         ],
     },
     {
-        title: '일정 관리',
+        title: '소식',
         items: [
-            { path: '/notifications', label: '모든 이벤트 보기', icon: Eye },
-            { path: '/account', label: '계정 관리', icon: UserCog },
-            { path: '/messages', label: '메시지', icon: MessageSquare },
+            { path: '/notifications', label: '공지사항', icon: Eye },
+            { path: '/menu', label: '주간 식단표', icon: Utensils },
+            { path: '/location', label: '찾아오시는 길', icon: Map },
             { path: '/settings', label: '설정', icon: Settings },
         ],
     },
@@ -172,13 +175,9 @@ const Navbar = () => {
         <nav style={styles.nav}>
             <div style={styles.brand}>
                 <div style={styles.brandIcon}>
-                    <img
-                        src="../public/images/logo/logo.png"
-                        alt="스마트 케어 로고"
-                        style={{ width: '100px', height: '100px', objectFit: 'contain' }}
-                    />
+                    <Activity size={20} />
                 </div>
-                {/* <h1 style={styles.brandTitle}>스마트 케어</h1> */}
+                <h1 style={styles.brandTitle}>스마트 케어</h1>
             </div>
 
             {navItems.map((section, index) => (

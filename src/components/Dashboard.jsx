@@ -217,7 +217,7 @@ export default function Dashboard() {
                                     </p>
                                 </div>
                                 <div className="stat-card">
-                                    <p className="stat-title">낙상 위험 환자</p>
+                                    <p className="stat-title">고위험군 환자</p>
                                     <p className="stat-value">{fallStats.riskPatients}명</p>
                                     <p className="stat-change">전체 환자의 {fallStats.riskPercentage}%</p>
                                 </div>

@@ -152,9 +152,6 @@ const EnvironmentalData = () => {
 
     return (
         <div className="environmental-data-page">
-            <h1 className="page-title">환경 모니터링</h1>
-            <p className="page-description">병실 환경 상태를 모니터링하고 관리합니다.</p>
-
             <div className="environmental-data-container">
                 <div className="sidebar">
                     <h2 className="sidebar-title">모니터링 병실</h2>
@@ -299,7 +296,7 @@ const EnvironmentalData = () => {
                         </div>
                     </div>
 
-                    <div className={`status-box ${statusColor}`}>
+                    {/* <div className={`status-box ${statusColor}`}>
                         {statusColor === 'normal' ? (
                             <CheckCircle size={16} className="status-box-icon" />
                         ) : (
@@ -311,13 +308,12 @@ const EnvironmentalData = () => {
                                 ? '모든 환경 지표가 정상 범위 내에 있습니다.'
                                 : '모든 환경 지표가 비정상 범위 내에 있습니다.'}
                         </span>
-                    </div>
+                    </div> */}
 
                     <div className="cctv-monitoring-section">
-                        <h3 className="stats-label">CCTV 실시간 모니터링</h3>
                         <div className="cctv-video-wrapper">
                             <img
-                                src="http://192.168.1.100:5050/stream"
+                                src="http://192.168.1.102:5050/stream"
                                 alt="실시간 CCTV 스트리밍"
                                 className="cctv-stream-image"
                             />

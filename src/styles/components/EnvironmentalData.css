@@ -654,6 +654,8 @@ room-status.normal {
     min-height: 0; /* flex 아이템이 컨테이너에 맞게 축소될 수 있도록 함 */
     margin-bottom: 10px; /* 여백 추가 */
     max-height: none; /* 최대 높이 제한 제거 */
+    margin-top: -30px; /* 위치를 위로 올림 */
+    position: relative; /* 위치 조정을 위한 상대 위치 설정 */
 }
 
 .cctv-placeholder {

@@ -433,7 +433,7 @@ const Notifications = () => {
             <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
                 {/* 헤더 섹션 */}
                 <div style={{ marginBottom: '24px' }}>
-                    <h1 className="dashboard-title">알림 관리</h1>
+                    <h1 className="dashboard-title">공지사항</h1>
                     <p className="dashboard-subtitle">모든 알림을 한 곳에서 관리하세요</p>
                 </div>
 

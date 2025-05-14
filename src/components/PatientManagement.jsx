@@ -441,7 +441,7 @@ const PatientManagement = () => {
         <div className="patient-management-container">
             <div className="header">
                 <div className="title-section">
-                    <h1>환자 관리</h1>
+                    <h1>환자 목록</h1>
                 </div>
             </div>
 

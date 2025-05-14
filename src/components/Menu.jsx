@@ -108,7 +108,7 @@ const Menu = () => {
 
     return (
         <div className="menu-board-container">
-            <h1 className="menu-board-title">주간식단표</h1>
+            <h1 className="menu-board-title">주간 식단표</h1>
 
             <div className="menu-board-search">
                 <form onSubmit={handleSearch}>
