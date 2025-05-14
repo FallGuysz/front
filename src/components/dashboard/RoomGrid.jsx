@@ -83,48 +83,39 @@ export default function RoomGrid() {
                     </button>
                 ))}
             </div>
+
             <div className="room-grid">
                 {paginatedCards.map((card) => (
                     <div key={card.roomId} className="room-card">
                         <div className="room-header">
-                            <h3 className="room-name">{card.roomName}</h3>
+                            <h3 className="room-name">[{card.roomName}호]</h3>
                             <span className={`status-badge ${card.status}`}>{card.status}</span>
                         </div>
-                        <div className="room-info">
-                            <div className="info-row">
-                                <Thermometer size={16} style={{ color: 'rgb(234,179,8)' }} />
-                                <span>{card.temperature}</span>
+                        <div className="room-info-row">
+                            <div className="room-info-value">
+                                <Thermometer size={40} style={{ color: 'rgb(234,179,8)' }} />
+                                <span>
+                                    <br></br>
+                                    {parseFloat(card.temperature)} °C
+                                </span>
                             </div>
-                            <div className="info-row">
-                                <Droplet size={16} style={{ color: '#3b82f6' }} />
-                                <span>{card.humidity}</span>
+                            <div className="room-info-value">
+                                <Droplet size={40} style={{ color: '#3b82f6' }} />
+                                <span>
+                                    <br></br>
+                                    {parseInt(card.humidity)}%
+                                </span>
                             </div>
-                            <div className="info-row">
-                                <Users size={16} />
-                                <span>{card.patients}명</span>
+                            <div className="room-info-value">
+                                <Users size={40} />
+                                <span>
+                                    <br></br>
+                                    {card.patients}명
+                                </span>
                             </div>
                         </div>
                     </div>
                 ))}
-            </div>
-            <div className="pagination-controls" style={{ marginTop: '12px', textAlign: 'center' }}>
-                <button
-                    disabled={currentPage === 0}
-                    onClick={() => setCurrentPage((p) => Math.max(p - 1, 0))}
-                    className="btn-small mr-2"
-                >
-                    이전
-                </button>
-                <span>
-                    {currentPage + 1} / {totalPages}
-                </span>
-                <button
-                    disabled={currentPage >= totalPages - 1}
-                    onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages - 1))}
-                    className="btn-small ml-2"
-                >
-                    다음
-                </button>
             </div>
         </div>
     );

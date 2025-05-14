@@ -96,8 +96,76 @@ const PatientDetail = () => {
 
     const handleSave = async () => {
         try {
-            const response = await axios.put(`${API_BASE_URL}/patients/${id}`, editedPatient);
-            setPatient(response.data.data);
+            // 날짜 필드 변환
+            const payload = { ...editedPatient };
+            if (payload.patient_birth) payload.patient_birth = payload.patient_birth.split('T')[0];
+            if (payload.medications) {
+                payload.medications = payload.medications.map((med) => ({
+                    ...med,
+                    med_start_dt: med.med_start_dt ? med.med_start_dt.split('T')[0] : '',
+                    med_end_dt: med.med_end_dt ? med.med_end_dt.split('T')[0] : '',
+                }));
+            }
+
+            // 이미지가 base64 문자열인 경우 (새로 업로드된 이미지)
+            if (
+                typeof editedPatient.profile_image === 'string' &&
+                editedPatient.profile_image.startsWith('data:image')
+            ) {
+                // FormData 사용
+                const formData = new FormData();
+
+                // Base64 문자열을 Blob으로 변환
+                const base64Response = await fetch(editedPatient.profile_image);
+                const blob = await base64Response.blob();
+
+                // Blob 객체를 파일로 변환
+                const file = new File([blob], 'profile.jpg', { type: 'image/jpeg' });
+
+                // 이미지 파일 추가
+                formData.append('profile_image', file);
+
+                // 기타 필드도 추가
+                Object.keys(payload).forEach((key) => {
+                    if (key !== 'profile_image') {
+                        if (typeof payload[key] === 'object' && payload[key] !== null) {
+                            formData.append(key, JSON.stringify(payload[key]));
+                        } else if (payload[key] !== null && payload[key] !== undefined) {
+                            formData.append(key, payload[key]);
+                        }
+                    }
+                });
+
+                // FormData로 서버에 전송
+                const response = await axios.put(`${API_BASE_URL}/patients/${id}`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+                // 응답 데이터로 상태 업데이트
+                const updatedPatient = response.data.data;
+
+                // 프로필 이미지 URL이 있는 경우 이미지 데이터 가져오기
+                if (updatedPatient.profile_image) {
+                    try {
+                        const imageResponse = await axios.get(`${API_BASE_URL}/patients/${id}/profile-image`, {
+                            responseType: 'blob',
+                        });
+                        updatedPatient.profile_image = URL.createObjectURL(imageResponse.data);
+                    } catch (imageError) {
+                        console.error('Error fetching updated profile image:', imageError);
+                        updatedPatient.profile_image = null;
+                    }
+                }
+
+                setPatient(updatedPatient);
+            } else {
+                // 기존 방식 사용 (이미지 변경 없음)
+                const response = await axios.put(`${API_BASE_URL}/patients/${id}`, payload);
+                setPatient(response.data.data);
+            }
+
             setIsEditing(false);
         } catch (err) {
             console.error('Error updating patient:', err);

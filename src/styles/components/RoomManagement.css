@@ -26,6 +26,7 @@
 
 .stat-card {
     background: white;
+    border: 2px solid #d0d0d1;
     border-radius: 12px;
     padding: 20px;
     display: flex;
@@ -701,7 +702,10 @@
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     cursor: pointer;
-    transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+    transition:
+        background 0.2s,
+        box-shadow 0.2s,
+        transform 0.2s;
     margin-bottom: 8px;
 }
 
@@ -820,7 +824,9 @@
     border: 1px solid var(--primary-color);
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
+    transition:
+        background-color 0.2s,
+        color 0.2s;
     font-size: 14px;
 }
 .assign-btn:hover,

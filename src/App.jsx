@@ -16,6 +16,8 @@ import RoomDetail from './components/RoomDetail';
 import Schedule from './components/Schedule';
 import Home from './components/Home';
 import PatientDetail from './components/PatientDetail';
+import Menu from './components/Menu';
+import Location from './components/Location';
 import './App.css';
 
 // 알림 컴포넌트
@@ -202,6 +204,8 @@ function AppContent({ notification, onCloseNotification, isLoading, setIsLoading
                     <Route path="/environmental" element={<PrivateRoute element={<EnvironmentalData />} />} />
                     <Route path="/notifications" element={<PrivateRoute element={<Notifications />} />} />
                     <Route path="/schedule" element={<PrivateRoute element={<Schedule />} />} />
+                    <Route path="/menu" element={<PrivateRoute element={<Menu />} />} />
+                    <Route path="/location" element={<PrivateRoute element={<Location />} />} />
                 </Routes>
             </main>
             <AlertNotification notification={notification} onClose={onCloseNotification} />

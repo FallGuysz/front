@@ -79,6 +79,7 @@ const AuthPage = () => {
                     user_id: response.data.user_id,
                     user_email: response.data.user_email,
                     user_role: response.data.user_role,
+                    user_name: response.data.user_name || response.data.user_email.split('@')[0] || '사용자',
                 };
 
                 // 토큰을 로컬 스토리지에 저장

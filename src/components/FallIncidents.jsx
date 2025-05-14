@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // 상단에 추가
 import {
     BarChart3,
     LineChart,
@@ -24,7 +23,6 @@ import '../styles/components/FallIncidents.css';
 const API_BASE_URL = 'http://localhost:3000';
 
 const FallIncidents = () => {
-    const navigate = useNavigate(); // 네비게이션 훅 추가
     const [incidents, setIncidents] = useState([]);
     const [hourlyStats, setHourlyStats] = useState([]);
     const [roomStats, setRoomStats] = useState([]);
@@ -43,8 +41,6 @@ const FallIncidents = () => {
     const [alertStatus, setAlertStatus] = useState(null);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
-    const [showConfirmModal, setShowConfirmModal] = useState(false);
-    const [selectedIncident, setSelectedIncident] = useState(null);
 
     useEffect(() => {
         const fetchAllData = async () => {
@@ -184,99 +180,13 @@ const FallIncidents = () => {
             avgResponseTime = `${minutes}분 ${seconds}초`;
         }
 
-        // 감지 정확도 계산
-        const totalIncidents = incidents.length;
-        const confirmedIncidents = incidents.filter((i) => i.accident_YN === 'Y').length;
-        const falseAlarms = totalIncidents - confirmedIncidents;
-
-        // 정확도 계산 (실제 발생 / 전체 감지 * 100)
-        const accuracy = totalIncidents > 0 ? ((confirmedIncidents / totalIncidents) * 100).toFixed(1) : '0';
-
-        // 이전 달과 비교
-        const lastMonth = new Date();
-        lastMonth.setMonth(lastMonth.getMonth() - 1);
-
-        const lastMonthIncidents = incidents.filter((i) => {
-            const date = new Date(i.accident_date);
-            return date.getMonth() === lastMonth.getMonth();
-        });
-
-        const lastMonthTotal = lastMonthIncidents.length;
-        const lastMonthConfirmed = lastMonthIncidents.filter((i) => i.accident_YN === 'Y').length;
-        const lastMonthAccuracy = lastMonthTotal > 0 ? ((lastMonthConfirmed / lastMonthTotal) * 100).toFixed(1) : '0';
-
-        // 정확도 변화율 계산
-        const accuracyChange = (Number(accuracy) - Number(lastMonthAccuracy)).toFixed(1);
-        const changePrefix = accuracyChange > 0 ? '+' : '';
-
         return {
             todayCount: todayIncidents,
             yesterdayCount: yesterdayIncidents,
             responseTime: avgResponseTime,
-            accuracy: `${accuracy}%`,
-            accuracyChange: `${changePrefix}${accuracyChange}%`,
+            accuracy: '95%', // 임시 데이터 유지
+            accuracyChange: '+2.3%', // 임시 데이터 유지
         };
-    };
-
-    // 상태 변경 함수 수정
-    const toggleAccidentStatus = async (accidentId, currentStatus) => {
-        try {
-            const newStatus = currentStatus === 'Y' ? 'N' : 'Y';
-            // API 호출부분 수정
-            const response = await axios.put(`${API_BASE_URL}/fall-incidents/${accidentId}/acknowledge`, {
-                accident_YN: newStatus,
-            });
-
-            if (response.data.code === 0) {
-                // 로컬 상태 업데이트 - 현재 상태의 반대값으로 토글
-                setIncidents((prevIncidents) =>
-                    prevIncidents.map((incident) =>
-                        incident.accident_id === accidentId
-                            ? { ...incident, accident_YN: newStatus } // 'N'이면 'Y'로, 'Y'면 'N'으로
-                            : incident
-                    )
-                );
-            }
-        } catch (error) {
-            console.error('사고 상태 변경 실패:', error);
-        }
-    };
-
-    const handleStatusClick = (incident) => {
-        // 이미 '미발생' 상태면 클릭 불가
-        if (incident.accident_YN === 'N') return;
-
-        setSelectedIncident(incident);
-        setShowConfirmModal(true);
-    };
-
-    const handleConfirm = async () => {
-        if (!selectedIncident) return;
-
-        try {
-            const newStatus = selectedIncident.accident_YN === 'Y' ? 'N' : 'Y';
-            const response = await axios.put(
-                `${API_BASE_URL}/fall-incidents/${selectedIncident.accident_id}/acknowledge`,
-                {
-                    accident_YN: newStatus,
-                }
-            );
-
-            if (response.data.code === 0) {
-                setIncidents((prevIncidents) =>
-                    prevIncidents.map((incident) =>
-                        incident.accident_id === selectedIncident.accident_id
-                            ? { ...incident, accident_YN: newStatus }
-                            : incident
-                    )
-                );
-            }
-        } catch (error) {
-            console.error('사고 상태 변경 실패:', error);
-        } finally {
-            setShowConfirmModal(false);
-            setSelectedIncident(null);
-        }
     };
 
     // 시간대별 통계에서 최대값 계산
@@ -394,14 +304,6 @@ const FallIncidents = () => {
         setCurrentPage(pageNumber);
     };
 
-    // 환자 상세정보로 이동하기
-    const handlePatientDetail = useCallback(
-        (patientId) => {
-            navigate(`/patients/${patientId}`);
-        },
-        [navigate]
-    );
-
     if (loading) {
         return <div className="loading-text">낙상 감지 정보를 불러오는 중...</div>;
     }
@@ -412,7 +314,7 @@ const FallIncidents = () => {
 
     return (
         <div className="dashboard-container">
-            <div className="page-header">
+            {/* <div className="page-header">
                 <h1>낙상 사고 관리</h1>
                 <div className="header-buttons">
                     <button onClick={sendLatestAlertToAll} disabled={sendingAlert} className="alert-button">
@@ -420,7 +322,7 @@ const FallIncidents = () => {
                         <AlertCircle size={18} />
                     </button>
                 </div>
-            </div>
+            </div> */}
 
             {alertStatus && (
                 <div className={`alert-status ${alertStatus.success ? 'success' : 'error'}`}>{alertStatus.message}</div>
@@ -582,9 +484,7 @@ const FallIncidents = () => {
                 <div className={`stats-card ${dataLoading ? 'loading' : ''}`}>
                     <div className="stats-card-header">
                         <h3>시간대별 감지 현황</h3>
-                        <span className="stats-date">
-                            {statsTab === '일간' ? '최근 24시간' : statsTab === '주간' ? '최근 7일' : '최근 30일'}
-                        </span>
+                        <span className="stats-date">{statsTab === '일간' ? '' : statsTab === '주간' ? '' : ''}</span>
                     </div>
 
                     <div className="time-chart-container">
@@ -654,7 +554,7 @@ const FallIncidents = () => {
                                             <th>발생 일시</th>
                                             <th>사고 여부</th>
                                             <th>병실</th>
-                                            <th>작업</th>
+                                            <th>상세정보</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -672,13 +572,6 @@ const FallIncidents = () => {
                                                             className={`status-badge ${
                                                                 incident.accident_YN === 'Y' ? '높음' : '정상'
                                                             }`}
-                                                            onClick={() => handleStatusClick(incident)}
-                                                            style={{
-                                                                cursor:
-                                                                    incident.accident_YN === 'Y'
-                                                                        ? 'pointer'
-                                                                        : 'default',
-                                                            }}
                                                         >
                                                             {incident.accident_YN === 'Y' ? '발생' : '미발생'}
                                                         </span>
@@ -687,12 +580,7 @@ const FallIncidents = () => {
                                                         {incident.room_name} ({incident.bed_num})
                                                     </td>
                                                     <td>
-                                                        <button
-                                                            className="link-button"
-                                                            onClick={() => handlePatientDetail(incident.patient_id)}
-                                                        >
-                                                            환자정보
-                                                        </button>
+                                                        <button className="link-button">상세정보</button>
                                                     </td>
                                                 </tr>
                                             ))}
@@ -745,30 +633,6 @@ const FallIncidents = () => {
                     </div>
                 </div>
             </div>
-
-            {/* 모달 수정 */}
-            {showConfirmModal && (
-                <div className="modal-overlay">
-                    <div className="confirm-modal">
-                        <h3>상태 변경</h3>
-                        <p>
-                            사고 상태를{' '}
-                            <strong className="status-text">
-                                '{selectedIncident?.accident_YN === 'Y' ? '미발생' : '발생'}'
-                            </strong>
-                            으로 변경하시겠습니까?
-                        </p>
-                        <div className="modal-buttons">
-                            <button className="cancel-button" onClick={() => setShowConfirmModal(false)}>
-                                취소
-                            </button>
-                            <button className="confirm-button" onClick={handleConfirm}>
-                                확인
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

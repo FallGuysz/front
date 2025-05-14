@@ -133,13 +133,70 @@
     }
 }
 
-.room-card {
-    width: 100%;
-    background: white;
-    border-radius: 0.5rem;
-    padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+/* 병실 카드 컨테이너 */
+.room-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    padding: 16px;
 }
+
+/* 병실 카드 */
+.room-card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    text-align: center;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.room-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 병실 헤더 */
+.room-header {
+    margin-bottom: 12px;
+}
+
+.room-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1f2937;
+}
+
+/* 병실 정보 */
+.room-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #374151;
+}
+
+.info-value {
+    font-weight: bold;
+    color: #1f2937;
+}
+
+.info-link {
+    font-size: 14px;
+    font-weight: bold;
+    color: #3b82f6;
+}
+
 .room-card:hover {
     transform: translateY(-2px);
 }
@@ -362,4 +419,34 @@
 .room-grid.single .room-card {
     max-width: 280px;
     width: 100%;
+}
+
+/* DashboardPage.css 또는 RoomGrid 관련 CSS에 추가 */
+.room-info-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    margin: 24px 0 8px 0;
+}
+.room-info-value {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: #1e293b;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.room-info-label-row {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 8px;
+}
+.room-info-label {
+    width: 60px;
+    text-align: center;
+    color: #64748b;
+    font-size: 1rem;
+    font-weight: 500;
 }

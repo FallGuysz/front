@@ -327,7 +327,9 @@
     gap: 12px;
     text-decoration: none;
     color: inherit;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
 }
 
 .home-card:hover {
@@ -363,21 +365,42 @@
     margin-top: auto;
 }
 
-.home-header {
+/* 상단 헤더 스타일 */
+.top-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 2rem;
+    align-items: center;
+    padding: 0.5rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.system-title {
+    display: flex;
+    flex-direction: column;
+}
+
+.system-title h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.system-title p {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 0.25rem 0 0 0;
 }
 
 .weather-widget {
     background-color: white;
-    padding: 12px 16px;
+    padding: 0.5rem 1rem;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 0.5rem;
 }
 
 .temperature {
@@ -388,4 +411,176 @@
 
 .weather {
     color: #64748b;
+}
+
+/* 기존 날씨 위젯 스타일 덮어쓰기 */
+.home-header {
+    display: none;
+}
+
+/* 홈 배너 */
+.home-banner-container {
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.home-banner {
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    min-height: 400px;
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.banner-content {
+    padding: 3rem;
+    width: 60%;
+    z-index: 2;
+}
+
+.banner-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.banner-subtitle {
+    font-size: 1.2rem;
+    color: #475569;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.banner-description {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.banner-image {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background-image: url('/images/hospital-hands.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+
+.banner-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1rem;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #cbd5e1;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.indicator.active {
+    background-color: #1e293b;
+}
+
+/* 퀵 링크 버튼 */
+.quick-links-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.quick-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+    width: 100px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.quick-link:hover {
+    transform: translateY(-3px);
+}
+
+.quick-link-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.quick-link-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #1e293b;
+    text-align: center;
+}
+
+.quick-link.active .quick-link-title {
+    color: #2563eb;
+    font-weight: 600;
+}
+
+.quick-link.active .quick-link-icon {
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .home-banner {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .banner-content {
+        width: 100%;
+        padding: 1.5rem;
+    }
+
+    .banner-title {
+        font-size: 1.8rem;
+    }
+
+    .banner-subtitle {
+        font-size: 1rem;
+    }
+
+    .banner-image {
+        position: relative;
+        width: 100%;
+        height: 200px;
+    }
+
+    .quick-links-container {
+        justify-content: center;
+    }
+
+    .quick-link {
+        width: 80px;
+    }
 }
