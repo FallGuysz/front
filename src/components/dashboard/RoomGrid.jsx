@@ -48,12 +48,24 @@ export default function RoomGrid() {
         const detail = roomDetails.find((d) => String(d.room_name) === String(r.room_name));
         const patientCount =
             detail && Array.isArray(detail.patients) ? detail.patients.length : parseInt(r.occupied_beds) || 0;
+
+        // 온도와 습도 파싱
+        const temp = Number(r.room_temp);
+        const humidity = parseInt(r.humidity);
+
+        // 새로운 기준에 따른 경고 상태 설정
+        const isTemperatureWarning = temp < 26 || temp > 28;
+        const isHumidityWarning = humidity < 48 || humidity > 65;
+        const status = isTemperatureWarning || isHumidityWarning ? '경고' : '정상';
+
         return {
             roomId: r.room_id,
             roomName: r.room_name,
-            status: r.status,
-            temperature: `${Number(r.room_temp).toFixed(1)}°C`,
-            humidity: `${r.humidity}%`,
+            status: status,
+            temperature: `${temp.toFixed(1)}°C`,
+            humidity: `${humidity}%`,
+            tempValue: temp,
+            humidityValue: humidity,
             patients: patientCount,
             floor: Math.floor(parseInt(r.room_name) / 100),
         };
@@ -86,7 +98,7 @@ export default function RoomGrid() {
 
             <div className="room-grid">
                 {paginatedCards.map((card) => (
-                    <div key={card.roomId} className="room-card">
+                    <div key={card.roomId} className={`room-card ${card.status === '경고' ? 'warning' : ''}`}>
                         <div className="room-header">
                             <h3 className="room-name">[{card.roomName}호]</h3>
                             <span className={`status-badge ${card.status}`}>{card.status}</span>

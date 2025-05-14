@@ -674,9 +674,9 @@ room-status.normal {
 /* CCTV 영상 스타일 */
 .cctv-monitoring-section img {
     width: 100%;
-    height: 475px;
+    height: 625px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 14px;
     display: block;
 }
 

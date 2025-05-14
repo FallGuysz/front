@@ -31,7 +31,20 @@ const EnvironmentalData = () => {
                     status: room.status,
                 }));
 
-                setRoomsData(data);
+                // 새로운 온도/습도 기준에 따라 status 업데이트
+                const updatedData = data.map((room) => {
+                    const temp = parseFloat(room.temperature);
+                    const humidity = parseFloat(room.humidity);
+                    const isTemperatureWarning = temp < 26 || temp > 28;
+                    const isHumidityWarning = humidity < 48 || humidity > 65;
+
+                    return {
+                        ...room,
+                        status: isTemperatureWarning || isHumidityWarning ? '경고' : '정상',
+                    };
+                });
+
+                setRoomsData(updatedData);
 
                 const floorNums = data.map((item) => {
                     const num = parseInt(item.roomName.replace(/[^0-9]/g, ''), 10);
@@ -147,7 +160,7 @@ const EnvironmentalData = () => {
 
     const currentValue = selectedRoom[metric];
     const statusColor = selectedRoom.status === '경고' ? 'warning' : 'normal';
-    const range = metric === 'temperature' ? { min: 18, max: 32 } : { min: 20, max: 80 };
+    const range = metric === 'temperature' ? { min: 20, max: 32 } : { min: 30, max: 80 };
     const widthPercent = ((currentValue - range.min) / (range.max - range.min)) * 100;
 
     return (
@@ -254,12 +267,12 @@ const EnvironmentalData = () => {
                                 {metric === 'temperature' ? (
                                     <Thermometer
                                         size={36}
-                                        color={currentValue > 26 || currentValue < 20 ? '#f44336' : '#4caf50'}
+                                        color={currentValue > 28 || currentValue < 26 ? '#f44336' : '#4caf50'}
                                     />
                                 ) : (
                                     <Droplets
                                         size={36}
-                                        color={currentValue > 60 || currentValue < 40 ? '#f44336' : '#4caf50'}
+                                        color={currentValue > 65 || currentValue < 48 ? '#f44336' : '#4caf50'}
                                     />
                                 )}
                                 <span className="current-text">
@@ -269,7 +282,7 @@ const EnvironmentalData = () => {
                             </div>
                             <div className="stats-subdesc">
                                 적정 {metric === 'temperature' ? '온도' : '습도'}:{' '}
-                                {metric === 'temperature' ? '22.0°C ~ 26.0°C' : '40.0% ~ 60.0%'}
+                                {metric === 'temperature' ? '26.0°C ~ 28.0°C' : '48.0% ~ 65.0%'}
                             </div>
                         </div>
                         <div className="range-info">
@@ -286,7 +299,7 @@ const EnvironmentalData = () => {
                                         {range.min}
                                         {metric === 'temperature' ? '°C' : '%'}
                                     </span>
-                                    <span>{metric === 'temperature' ? '25°C' : '50%'}</span>
+                                    <span>{metric === 'temperature' ? '27°C' : '56.5%'}</span>
                                     <span>
                                         {range.max}
                                         {metric === 'temperature' ? '°C' : '%'}

@@ -97,10 +97,13 @@
     justify-content: space-between;
     margin-bottom: 24px;
     padding: 16px 20px;
-    border-bottom: 1px solid #e2e8f0;
+    background: white;
+    /* 테두리와 그림자 제거 */
 }
 
 .section-header h2 {
+    margin: 0;
+    font-size: 18px;
     margin: 0;
     font-size: 18px;
     font-weight: 600;
@@ -154,6 +157,8 @@
     gap: 8px;
     border-bottom: 1px solid #e2e8f0;
     overflow-x: auto;
+    background: white;
+    margin-bottom: 16px;
 }
 
 .floor-button {
@@ -690,7 +695,8 @@
 .room-list {
     list-style: none;
     margin: 0;
-    padding: 0 16px;
+    padding: 20px; /* padding 값 통일 */
+    background: white;
 }
 
 .room-list-item {
@@ -699,23 +705,12 @@
     align-items: center;
     padding: 16px;
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border: 2px solid #d0d0d1;
+    border-radius: 12px;
     cursor: pointer;
-    transition:
-        background 0.2s,
-        box-shadow 0.2s,
-        transform 0.2s;
-    margin-bottom: 8px;
-}
-
-.room-list-item:hover {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transform: translateY(-1px);
-}
-
-.room-list-item.selected {
-    box-shadow: 0 4px 8px rgba(30, 64, 175, 0.2);
+    transition: all 0.2s;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .info-left {
@@ -755,121 +750,121 @@
 }
 .humi-icon {
     color: #3b82f6; /* 기존 파란색 톤 복원 */
-}
 
-/* 테이블 왼쪽 칼럼 너비 조정 */
-.data-table th:nth-child(1),
-.data-table td:nth-child(1) {
-    width: 100px;
-}
-.data-table th:nth-child(2),
-.data-table td:nth-child(2) {
-    width: 60px;
-    white-space: nowrap;
-}
-.data-table th:nth-child(3),
-.data-table td:nth-child(3) {
-    width: 100px;
-}
-.data-table th:nth-child(4),
-.data-table td:nth-child(4) {
-    width: 70px;
-    white-space: nowrap;
-}
-/* '상세정보' 칼럼 더 줄이기 */
-.data-table th:nth-child(5),
-.data-table td:nth-child(5) {
-    width: 60px;
-    padding: 12px 4px;
-    white-space: nowrap;
-}
+    /* 테이블 왼쪽 칼럼 너비 조정 */
+    .data-table th:nth-child(1),
+    .data-table td:nth-child(1) {
+        width: 100px;
+    }
+    .data-table th:nth-child(2),
+    .data-table td:nth-child(2) {
+        width: 60px;
+        white-space: nowrap;
+    }
+    .data-table th:nth-child(3),
+    .data-table td:nth-child(3) {
+        width: 100px;
+    }
+    .data-table th:nth-child(4),
+    .data-table td:nth-child(4) {
+        width: 70px;
+        white-space: nowrap;
+    }
+    /* '상세정보' 칼럼 더 줄이기 */
+    .data-table th:nth-child(5),
+    .data-table td:nth-child(5) {
+        width: 60px;
+        padding: 12px 4px;
+        white-space: nowrap;
+    }
 
-/* 재배정 모달 스타일 */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-.modal-content {
-    background: #fff;
-    border-radius: 8px;
-    padding: 24px;
-    max-width: 400px;
-    width: 90%;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+    /* 재배정 모달 스타일 */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+    .modal-content {
+        background: #fff;
+        border-radius: 8px;
+        padding: 24px;
+        max-width: 400px;
+        width: 90%;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
 
-.assign-list {
-    list-style: none;
-    margin: 16px 0 0;
-    padding: 0;
-    max-height: 300px;
-    overflow-y: auto;
-}
-.assign-list-item {
-    margin-bottom: 12px;
-}
-.assign-btn,
-.bed-btn {
-    padding: 8px 16px;
-    background-color: transparent;
-    color: var(--primary-color);
-    border: 1px solid var(--primary-color);
-    border-radius: 6px;
-    cursor: pointer;
-    transition:
-        background-color 0.2s,
-        color 0.2s;
-    font-size: 14px;
-}
-.assign-btn:hover,
-.bed-btn:hover {
-    background-color: rgba(25, 72, 144, 0.1);
-}
-.assign-btn:disabled,
-.bed-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-.cancel-btn {
-    padding: 8px 16px;
-    background-color: #e5e7eb;
-    color: #1e293b;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    font-size: 14px;
-}
-.cancel-btn:hover {
-    background-color: #cbd5e1;
-}
-.bed-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 16px;
-    max-height: 200px;
-    overflow-y: auto;
-}
+    .assign-list {
+        list-style: none;
+        margin: 16px 0 0;
+        padding: 0;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    .assign-list-item {
+        margin-bottom: 12px;
+    }
+    .assign-btn,
+    .bed-btn {
+        padding: 8px 16px;
+        background-color: transparent;
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+        border-radius: 6px;
+        cursor: pointer;
+        transition:
+            background-color 0.2s,
+            color 0.2s;
+        font-size: 14px;
+    }
+    .assign-btn:hover,
+    .bed-btn:hover {
+        background-color: rgba(25, 72, 144, 0.1);
+    }
+    .assign-btn:disabled,
+    .bed-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    .cancel-btn {
+        padding: 8px 16px;
+        background-color: #e5e7eb;
+        color: #1e293b;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        font-size: 14px;
+    }
+    .cancel-btn:hover {
+        background-color: #cbd5e1;
+    }
+    .bed-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 16px;
+        max-height: 200px;
+        overflow-y: auto;
+    }
 
-/* 상세정보(header) 버튼 텍스트만 남기기 */
-.room-detail-section .section-header .action-button {
-    background: none !important;
-    border: none;
-    color: #1e293b;
-}
+    /* 상세정보(header) 버튼 텍스트만 남기기 */
+    .room-detail-section .section-header .action-button {
+        background: none !important;
+        border: none;
+        color: #1e293b;
+    }
 
-/* 환자탭 재배정 버튼 텍스트만 남기기 */
-.patient-list .action-button.small {
-    background: none !important;
-    border: none;
-    color: #1e293b;
+    /* 환자탭 재배정 버튼 텍스트만 남기기 */
+    .patient-list .action-button.small {
+        background: none !important;
+        border: none;
+        color: #1e293b;
+    }
 }
