@@ -565,7 +565,9 @@ const PatientManagement = () => {
             {/* 검색 및 필터 섹션 */}
             <div className="search-filter-section">
                 <div className="search-container">
-                    <Search className="search-icon" />
+                    {/* <div className="search-icon-wrapper">
+                        <Search className="search-icon" />
+                    </div> */}
                     <input
                         type="text"
                         className="search-input"

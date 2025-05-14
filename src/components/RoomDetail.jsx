@@ -39,6 +39,11 @@ const RoomDetail = () => {
         return '정상';
     };
 
+    const getBedLabel = (bedNum) => {
+        const labels = { 1: 'A', 2: 'B', 3: 'C', 4: 'D' };
+        return labels[bedNum] || bedNum;
+    };
+
     const handlePatientDetail = (patientId) => {
         navigate(`/patients/${patientId}`);
     };
@@ -126,12 +131,6 @@ const RoomDetail = () => {
                     >
                         관리 이력
                     </button>
-                    <button
-                        className={`tab-button ${activeTab === '구조' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('구조')}
-                    >
-                        방 구조
-                    </button>
                 </div>
 
                 <div className="tab-content">
@@ -165,6 +164,13 @@ const RoomDetail = () => {
 
                     {activeTab === '환자' && (
                         <div className="patient-info">
+                            {/* 병실 구조도 추가 - 테이블 위에 배치 */}
+                            <div className="room-container">
+                                <div className="room-image">
+                                    <img src="/images/room.png" alt="병실 구조도" className="room-layout-image" />
+                                </div>
+                            </div>
+
                             <table className="data-table">
                                 <thead>
                                     <tr>
@@ -182,7 +188,7 @@ const RoomDetail = () => {
                                             <td>{patient.patient_name}</td>
                                             <td>{patient.patient_birth}</td>
                                             <td>{patient.patient_blood}형</td>
-                                            <td>{patient.bed_id}</td>
+                                            <td>{getBedLabel(patient.bed_num)}</td>
                                             <td>
                                                 <span className="status-badge 정상">안정</span>
                                             </td>
@@ -223,53 +229,6 @@ const RoomDetail = () => {
                                         <p>김환자 님 입원</p>
                                         <span className="history-time">2024-04-18 10:15</span>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {activeTab === '구조' && (
-                        <div className="room-layout">
-                            <div className="room-container">
-                                <div className="room-image">
-                                    <img src="/images/room.png" alt="병실 구조도" className="room-layout-image" />
-                                </div>
-                                <div className="room-grid">
-                                    {Array.from({ length: room.bed_count || 4 }).map((_, index) => {
-                                        // bed_id와 일치하는 환자 찾기
-                                        const patient = room.patients.find((p) => p.bed_num === (index + 1).toString());
-                                        return (
-                                            <div
-                                                key={index}
-                                                className={`bed-space ${patient ? 'occupied' : 'empty'}`}
-                                                onClick={() => patient && handlePatientDetail(patient.patient_id)}
-                                            >
-                                                <div className="bed-icon">
-                                                    <BedDouble size={24} color={patient ? '#2563eb' : '#9ca3af'} />
-                                                </div>
-                                                <div className="bed-info">
-                                                    <span className="bed-number">침상 {index + 1}</span>
-                                                    {patient ? (
-                                                        <div className="patient-brief">
-                                                            <span className="patient-name">{patient.patient_name}</span>
-                                                            <div className="patient-details">
-                                                                <span className="patient-blood">
-                                                                    {patient.patient_blood}형
-                                                                </span>
-                                                                <span
-                                                                    className={`patient-status ${patient.patient_status}`}
-                                                                >
-                                                                    {patient.patient_status}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    ) : (
-                                                        <div className="bed-status empty">빈 침상</div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
                                 </div>
                             </div>
                         </div>

@@ -178,9 +178,16 @@
     border-collapse: collapse;
 }
 
+.data-table th,
+.data-table td {
+    padding: 1rem;
+    text-align: center !important; /* 강제 중앙 정렬 */
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 14px;
+    color: #1e293b;
+}
+
 .data-table th {
-    text-align: left;
-    padding: 12px 16px;
     font-size: 12px;
     font-weight: 500;
     color: #64748b;
@@ -188,15 +195,15 @@
     background-color: #f8fafc;
 }
 
-.data-table td {
-    padding: 16px;
-    border-bottom: 1px solid #e2e8f0;
-    font-size: 14px;
-    color: #1e293b;
+/* 이름 열만 왼쪽 정렬 */
+.data-table td:first-child,
+.data-table th:first-child {
+    text-align: left !important;
 }
 
+/* 상세보기 버튼 열은 중앙 정렬 유지 */
 .data-table td:last-child {
-    text-align: center;
+    text-align: center !important;
 }
 
 .status-badge {
@@ -283,8 +290,10 @@
 }
 
 .room-container {
-    max-width: 800px;
-    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
 }
 
 .room-info {
@@ -293,15 +302,15 @@
 }
 
 .room-image {
-    margin-bottom: 24px;
-    text-align: center;
+    width: 80%;
+    max-width: 800px;
 }
 
 .room-layout-image {
-    max-width: 100%;
+    width: 100%;
     height: auto;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .room-grid {
@@ -401,4 +410,10 @@
     font-size: 14px;
     color: #9ca3af;
     font-style: italic;
+}
+
+.patient-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
