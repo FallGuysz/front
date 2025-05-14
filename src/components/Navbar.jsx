@@ -172,9 +172,13 @@ const Navbar = () => {
         <nav style={styles.nav}>
             <div style={styles.brand}>
                 <div style={styles.brandIcon}>
-                    <Activity size={20} />
+                    <img
+                        src="../public/images/logo/logo.png"
+                        alt="스마트 케어 로고"
+                        style={{ width: '100px', height: '100px', objectFit: 'contain' }}
+                    />
                 </div>
-                <h1 style={styles.brandTitle}>스마트 케어</h1>
+                {/* <h1 style={styles.brandTitle}>스마트 케어</h1> */}
             </div>
 
             {navItems.map((section, index) => (
