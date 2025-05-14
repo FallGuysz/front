@@ -195,12 +195,6 @@
     background-color: #f8fafc;
 }
 
-/* 이름 열만 왼쪽 정렬 */
-.data-table td:first-child,
-.data-table th:first-child {
-    text-align: left !important;
-}
-
 /* 상세보기 버튼 열은 중앙 정렬 유지 */
 .data-table td:last-child {
     text-align: center !important;

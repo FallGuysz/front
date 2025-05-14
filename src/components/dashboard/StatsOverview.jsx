@@ -101,10 +101,10 @@ export default function StatsOverview() {
                         <Card key={index} className="overflow-hidden shadow">
                             <CardContent className="p-5">
                                 <div className="flex items-center">
-                                    <div className="p-2 mr-2 rounded-full" style={{ backgroundColor: item.bgColor }}>
-                                        <item.icon className="w-5 h-5" style={{ color: item.color }} />
+                                    <div className="p-2 mr-6 rounded-full" style={{ backgroundColor: item.bgColor }}>
+                                        <item.icon className="w-6 h-6" style={{ color: item.color }} />
                                     </div>
-                                    <div>
+                                    <div className="flex-1">
                                         <p className="text-sm font-medium text-gray-500 truncate">{item.name}</p>
                                         <p className="mt-1 text-3xl font-semibold text-gray-900">{item.value}</p>
                                     </div>

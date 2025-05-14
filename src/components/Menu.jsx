@@ -107,89 +107,95 @@ const Menu = () => {
     };
 
     return (
-        <div className="menu-board-container">
-            <h1 className="menu-board-title">주간 식단표</h1>
-
-            <div className="menu-board-search">
-                <form onSubmit={handleSearch}>
-                    <select className="search-category">
-                        <option value="제목">제목</option>
-                        <option value="내용">내용</option>
-                        <option value="작성자">작성자</option>
-                    </select>
-                    <input
-                        type="text"
-                        placeholder="검색어(제목)"
-                        className="search-input"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                    <button type="submit" className="search-button">
-                        검색
-                    </button>
-                </form>
+        <div className="menu-container">
+            <div className="menu-header">
+                <h1>주간식단표</h1>
+                <p>이번 주 식단을 확인하세요</p>
             </div>
+            <div className="menu-board-container">
+                <div className="menu-content">
+                    <div className="menu-board-search">
+                        <form onSubmit={handleSearch}>
+                            <select className="search-category">
+                                <option value="제목">제목</option>
+                                <option value="내용">내용</option>
+                                <option value="작성자">작성자</option>
+                            </select>
+                            <input
+                                type="text"
+                                placeholder="검색어(제목)"
+                                className="search-input"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                            <button type="submit" className="search-button">
+                                검색
+                            </button>
+                        </form>
+                    </div>
 
-            {loading ? (
-                <div className="loading">
-                    <p>식단표 목록 불러오는 중...</p>
+                    {loading ? (
+                        <div className="loading">
+                            <p>식단표 목록 불러오는 중...</p>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="menu-board-info">
+                                <span>전체 {menuList.length}건 1 페이지</span>
+                            </div>
+
+                            <table className="menu-board-table">
+                                <thead>
+                                    <tr>
+                                        <th className="menu-board-no">번호</th>
+                                        <th className="menu-board-title-col">제목</th>
+                                        <th className="menu-board-writer">작성자</th>
+                                        <th className="menu-board-date">작성일</th>
+                                        <th className="menu-board-views">조회</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {menuList.map((item) => (
+                                        <tr key={item.id}>
+                                            <td className="menu-board-no">{item.id}</td>
+                                            <td className="menu-board-title-col">
+                                                <a href={`#/menu/${item.id}`}>{item.title}</a>
+                                            </td>
+                                            <td className="menu-board-writer">{item.writer}</td>
+                                            <td className="menu-board-date">{formatDate(item.date)}</td>
+                                            <td className="menu-board-views">{item.views}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+
+                            <div className="menu-board-pagination">
+                                <a href="#" className="pagination-arrow">
+                                    &lt;
+                                </a>
+                                <a href="#" className="pagination-number active">
+                                    1
+                                </a>
+                                <a href="#" className="pagination-number">
+                                    2
+                                </a>
+                                <a href="#" className="pagination-number">
+                                    3
+                                </a>
+                                <a href="#" className="pagination-number">
+                                    4
+                                </a>
+                                <a href="#" className="pagination-number">
+                                    5
+                                </a>
+                                <a href="#" className="pagination-arrow">
+                                    &gt;
+                                </a>
+                            </div>
+                        </>
+                    )}
                 </div>
-            ) : (
-                <>
-                    <div className="menu-board-info">
-                        <span>전체 {menuList.length}건 1 페이지</span>
-                    </div>
-
-                    <table className="menu-board-table">
-                        <thead>
-                            <tr>
-                                <th className="menu-board-no">번호</th>
-                                <th className="menu-board-title-col">제목</th>
-                                <th className="menu-board-writer">작성자</th>
-                                <th className="menu-board-date">작성일</th>
-                                <th className="menu-board-views">조회</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {menuList.map((item) => (
-                                <tr key={item.id}>
-                                    <td className="menu-board-no">{item.id}</td>
-                                    <td className="menu-board-title-col">
-                                        <a href={`#/menu/${item.id}`}>{item.title}</a>
-                                    </td>
-                                    <td className="menu-board-writer">{item.writer}</td>
-                                    <td className="menu-board-date">{formatDate(item.date)}</td>
-                                    <td className="menu-board-views">{item.views}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-
-                    <div className="menu-board-pagination">
-                        <a href="#" className="pagination-arrow">
-                            &lt;
-                        </a>
-                        <a href="#" className="pagination-number active">
-                            1
-                        </a>
-                        <a href="#" className="pagination-number">
-                            2
-                        </a>
-                        <a href="#" className="pagination-number">
-                            3
-                        </a>
-                        <a href="#" className="pagination-number">
-                            4
-                        </a>
-                        <a href="#" className="pagination-number">
-                            5
-                        </a>
-                        <a href="#" className="pagination-arrow">
-                            &gt;
-                        </a>
-                    </div>
-                </>
-            )}
+            </div>
         </div>
     );
 };

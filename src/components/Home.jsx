@@ -14,10 +14,8 @@ const Home = () => {
     const banners = [
         {
             id: 1,
-            title: '경력 의사진과 산뢰파해연구를 위한 전진의 성공 전달',
-            subtitle: '전문적인 의료 서비스로 환자의 건강을 책임집니다',
-            description: '전문적인 의료 서비스로 환자의 건강을 책임집니다',
-            bgColor: '#FEF2FF',
+
+            image: '/images/banner1.png', // 이미지 경로 추가
         },
         {
             id: 2,
@@ -25,6 +23,7 @@ const Home = () => {
             subtitle: '24시간 모니터링 시스템으로 안전한 병원 환경을 제공합니다',
             description: '최신 기술을 활용한 환자 모니터링으로 안전한 병원 환경을 조성합니다',
             bgColor: '#E0F2FE',
+            image: '/images/banner2.jpg',
         },
         {
             id: 3,
@@ -32,6 +31,7 @@ const Home = () => {
             subtitle: '환자 중심의 케어로 더 나은 삶의 질을 제공합니다',
             description: '환자 한 분 한 분을 소중히 여기는 맞춤형 케어 서비스를 제공합니다',
             bgColor: '#ECFDF5',
+            image: '/images/banner3.jpg',
         },
     ];
 
@@ -137,14 +137,19 @@ const Home = () => {
 
             <div className="home-banner-container">
                 <div className="home-banner" style={{ backgroundColor: banners[currentBanner].bgColor }}>
-                    <div className="banner-content">
-                        <h1 className="banner-title">{banners[currentBanner].title}</h1>
-                        <p className="banner-subtitle">{banners[currentBanner].subtitle}</p>
-                        <div className="banner-description">
-                            <p>{banners[currentBanner].description}</p>
-                        </div>
+                    <div className="banner-image">
+                        <img
+                            src={banners[currentBanner].image}
+                            alt={banners[currentBanner].title}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'con',
+                                borderRadius: 12,
+                                display: 'block',
+                            }}
+                        />
                     </div>
-                    <div className="banner-image">{/* 이미지는 CSS에서 배경으로 처리 */}</div>
                 </div>
                 <div className="banner-indicators">
                     {banners.map((banner, index) => (
