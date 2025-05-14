@@ -12,17 +12,14 @@ export default defineConfig({
     server: {
         host: '0.0.0.0',
         port: 5000,
-        // HMR 웹소켓 비활성화
-        hmr: false,
+        // HMR 웹소켓 활성화
+        hmr: true,
         fs: {
             strict: false,
         },
         cors: true,
         // SPA 새로고침 문제 해결을 위한 historyApiFallback 설정
-        historyApiFallback: {
-            disableDotRule: true,
-            rewrites: [{ from: /./, to: '/index.html' }],
-        },
+        historyApiFallback: true,
         // Proxy API requests to backend server
         proxy: {
             '/api': {
@@ -51,9 +48,6 @@ export default defineConfig({
     preview: {
         port: 5000,
         // SPA 라우팅을 위한 historyApiFallback 설정
-        historyApiFallback: {
-            disableDotRule: true,
-            rewrites: [{ from: /./, to: '/index.html' }],
-        },
+        historyApiFallback: true,
     },
 });

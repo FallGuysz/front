@@ -5,20 +5,38 @@ const Location = () => {
     const mapContainerRef = useRef(null);
 
     useEffect(() => {
-        // Kakao 맵 API가 로드되었는지 확인
-        const kakao = window.kakao;
+        // 환경 변수에서 Kakao API 키를 가져오거나 window.ENV에서 가져오기
+        const kakaoApiKey = import.meta.env.VITE_KAKAO_API_KEY || (window.ENV && window.ENV.KAKAO_API_KEY);
 
-        if (kakao && kakao.maps) {
+        // Kakao API가 아직 로드되지 않았다면 동적으로 로드
+        if (!window.kakao) {
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoApiKey}`;
+            script.async = true;
+            script.onload = initializeMap;
+            document.head.appendChild(script);
+        } else {
+            initializeMap();
+        }
+
+        function initializeMap() {
+            if (!window.kakao || !window.kakao.maps) {
+                console.error('Kakao 지도 API가 로드되지 않았습니다.');
+                return;
+            }
+
+            const kakao = window.kakao;
             const mapContainer = mapContainerRef.current;
             const mapOption = {
-                center: new kakao.maps.LatLng(35.8468, 128.6334), // 대구 좌표 (실제 병원 위치)
+                center: new kakao.maps.LatLng(35.7207657, 128.4541278), // 대구 좌표 (실제 병원 위치)
                 level: 3,
             };
 
             const map = new kakao.maps.Map(mapContainer, mapOption);
 
             // 마커 위치
-            const markerPosition = new kakao.maps.LatLng(35.8468, 128.6334);
+            const markerPosition = new kakao.maps.LatLng(35.7207657, 128.4541278);
 
             // 마커 생성
             const marker = new kakao.maps.Marker({
@@ -31,9 +49,11 @@ const Location = () => {
             // 줌 컨트롤 생성
             const zoomControl = new kakao.maps.ZoomControl();
             map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-        } else {
-            console.error('Kakao 지도 API가 로드되지 않았습니다.');
         }
+
+        return () => {
+            // 컴포넌트 언마운트 시 정리 작업 (필요한 경우)
+        };
     }, []);
 
     return (

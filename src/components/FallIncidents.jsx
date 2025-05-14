@@ -412,16 +412,6 @@ const FallIncidents = () => {
 
     return (
         <div className="dashboard-container">
-            <div className="page-header">
-                <h1>낙상 사고 관리</h1>
-                <div className="header-buttons">
-                    <button onClick={sendLatestAlertToAll} disabled={sendingAlert} className="alert-button">
-                        {sendingAlert ? '전송 중...' : '최근 사고 알림 보내기'}
-                        <AlertCircle size={18} />
-                    </button>
-                </div>
-            </div>
-
             {alertStatus && (
                 <div className={`alert-status ${alertStatus.success ? 'success' : 'error'}`}>{alertStatus.message}</div>
             )}
