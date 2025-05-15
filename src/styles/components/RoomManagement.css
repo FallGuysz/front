@@ -244,8 +244,9 @@
 }
 
 .status-badge.정상 {
-    background: #dcfce7;
-    color: #166534;
+    color: #16a34a;
+    background-color: rgba(22, 163, 74, 0.1);
+    border: 1px solid rgba(22, 163, 74, 0.2);
 }
 
 .status-badge.중간 {
@@ -256,6 +257,12 @@
 .status-badge.높음 {
     background: #fee2e2;
     color: #991b1b;
+}
+
+.status-badge.경고 {
+    color: #dc2626;
+    background-color: rgba(220, 38, 38, 0.1);
+    border: 1px solid rgba(220, 38, 38, 0.2);
 }
 
 .room-info {
@@ -451,16 +458,18 @@
 
 /* 상태 표시기 */
 .status-indicator {
-    padding: 4px 12px;
-    border-radius: 4px;
+    padding: 6px 12px;
+    border-radius: 4px; /* 배지와 동일한 radius로 수정 */
+    font-size: 12px; /* 배지와 동일한 크기로 수정 */
     font-weight: 500;
     text-align: center;
-    width: fit-content;
+    max-width: fit-content; /* 컨텐츠 크기에 맞게 조정 */
 }
 
 .status-indicator.정상 {
-    background-color: #dcfce7;
-    color: #166534;
+    color: #16a34a;
+    background-color: rgba(22, 163, 74, 0.1);
+    border: 1px solid rgba(22, 163, 74, 0.2);
 }
 
 .status-indicator.중간 {
@@ -471,6 +480,12 @@
 .status-indicator.높음 {
     background-color: #fee2e2;
     color: #991b1b;
+}
+
+.status-indicator.경고 {
+    color: #dc2626;
+    background-color: rgba(220, 38, 38, 0.1);
+    border: 1px solid rgba(220, 38, 38, 0.2);
 }
 
 /* 빈 메시지 스타일 */

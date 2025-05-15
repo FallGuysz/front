@@ -416,8 +416,8 @@ const FallIncidents = () => {
                 <div className={`alert-status ${alertStatus.success ? 'success' : 'error'}`}>{alertStatus.message}</div>
             )}
 
-            <h1 className="dashboard-title">낙상 감지 통계</h1>
-            <p className="dashboard-subtitle">병실별 낙상 감지 현황 및 통계를 관리하세요</p>
+            <h1 className="dashboard-title">환자 안전 감지 리포트</h1>
+            <p className="dashboard-subtitle">가족의 안전을 위한 낙상 이력을 실시간으로 제공합니다</p>
 
             {/* 낙상 통계 요약 카드 섹션 */}
             <div className="stats-summary-cards">

@@ -125,9 +125,14 @@ const Home = () => {
     return (
         <div className="dashboard-home-container">
             <div className="top-header">
-                <div className="system-title">
-                    <h1>병원 모니터링 시스템</h1>
-                    {/* <p>환영합니다. 이 시스템은 환자의 낙상 사고를 감지하고 환경을 모니터링합니다.</p> */}
+                <div className="system-title" style={{ margin: '0 auto' }}>
+                    <img
+                        src="../public/images/logo/logo_header.png"
+                        alt="logo"
+                        style={{ width: '600px', height: '100px' }}
+                    />
+                    {/* <h1>스마트하게 지키는 병실의 안전</h1> */}
+                    {/* <p>AI 기반 모니터링으로 환자와 병원을 지키세요.</p> */}
                 </div>
                 <div className="weather-widget">
                     <span className="temperature">{weather.temperature}</span>

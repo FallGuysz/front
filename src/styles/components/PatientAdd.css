@@ -204,6 +204,10 @@
     flex-direction: column;
     align-items: center;
     gap: 2rem;
+    background-color: #f9f9f9;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
 }
 
 .form-panels {
@@ -244,6 +248,16 @@
 .memo-info {
     width: 100%;
     box-sizing: border-box;
+}
+
+.patient-basic-info,
+.hospital-info {
+    background: #fff;
+    border-radius: 0.75rem;
+    padding: 24px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto;
 }
 
 .profile-image-large {
@@ -288,6 +302,7 @@
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    margin-top: 10px;
 }
 
 .profile-upload-button {
@@ -400,12 +415,103 @@
     box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
 }
 
+.info-row.gender-row {
+    align-items: center;
+    gap: 1.5rem;
+    justify-content: flex-end;
+}
+
+.gender-radio-group {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.gender-radio-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 2px solid #d1d5db;
+    background: #f9fafb;
+    min-width: 60px;
+    height: 48px;
+    font-size: 1.2rem;
+    transition:
+        border 0.2s,
+        background 0.2s;
+    user-select: none;
+    padding: 0 16px;
+}
+
+.gender-radio-label input[type='radio'] {
+    accent-color: #194890;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+}
+
+.gender-radio-label .gender-icon.male {
+    color: #2563eb;
+    font-size: 1.5rem;
+}
+
+.gender-radio-label .gender-icon.female {
+    color: #ec4899;
+    font-size: 1.5rem;
+}
+
+.gender-radio-label.selected,
+.gender-radio-label:hover {
+    border-color: #194890;
+    background: #e0e7ef;
+}
+
+.gender-radio-label.selected .gender-icon.male,
+.gender-radio-label.selected .gender-icon.female {
+    filter: brightness(1.2);
+}
+
+.gender-text {
+    font-weight: 600;
+    color: #222;
+    margin-left: 2px;
+}
+
+/* 침대 라디오 버튼 그룹 스타일 */
+.bed-radio-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 가로 2칸 */
+    grid-auto-rows: 48px; /* 세로 높이(원하는 값으로 조정) */
+    gap: 1rem;
+    margin-top: 0.2rem;
+    max-width: 180px; /* 필요시 조정 */
+}
+
+.bed-radio-label {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 500;
+    user-select: none;
+}
+
+.bed-radio-label input[type='radio'] {
+    accent-color: rgb(25, 72, 144);
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+}
+/* 
 .hospital-info {
     background-color: #f9fafb;
     border-radius: 0.75rem;
     padding: 1.5rem;
-    border: 1px solid #e5e7eb;
-}
+} */
 
 .hospital-info h3 {
     font-size: 1.125rem;
@@ -481,8 +587,7 @@
     box-shadow: 0 0 0 2px rgba(25, 72, 144, 0.1);
 }
 
-/* 날짜 입력 필드 비활성화 스타일 */
-.hospital-info .info-row input[type='date']:disabled {
+날짜 입력 필드 비활성화 스타일 .hospital-info .info-row input[type='date']:disabled {
     background-color: #f3f4f6;
     cursor: not-allowed;
     opacity: 0.7;
@@ -654,4 +759,318 @@
 .detail-header .back-button,
 .detail-header .header-buttons {
     z-index: 1;
+}
+
+select option:disabled {
+    color: #aaa !important;
+    background: #f3f4f6 !important;
+}
+
+/* 침대 선택 버튼 스타일 */
+.bed-radio-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 가로 2칸 */
+    grid-auto-rows: 48px; /* 세로 높이(원하는 값으로 조정) */
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.2rem;
+    max-width: 180px; /* 필요시 조정 */
+}
+
+.bed-radio-label {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    min-width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: 2px solid #d1d5db;
+    background: #f9fafb;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #374151;
+    transition:
+        border 0.2s,
+        background 0.2s,
+        color 0.2s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    user-select: none;
+    padding: 0 12px;
+}
+
+.bed-radio-label input[type='radio'] {
+    display: none;
+}
+
+.bed-radio-label:hover {
+    border-color: #194890;
+    background: #e0e7ef;
+    color: #194890;
+}
+
+.bed-radio-label input[type='radio']:checked + span {
+    color: #fff;
+}
+
+.bed-radio-label input[type='radio']:checked ~ .bed-radio-label {
+    border-color: #194890;
+    background: #194890;
+    color: #fff;
+}
+
+.bed-radio-label.selected {
+    border-color: #194890;
+    background: #194890;
+    color: #fff;
+}
+
+.bed-radio-label:active {
+    background: #c7d2fe;
+}
+
+.bed-radio-label[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.floor-room-select-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    width: 100%;
+}
+
+.floor-select-group,
+.room-select-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.floor-btn,
+.room-btn {
+    min-width: 60px;
+    height: 40px;
+    border-radius: 8px;
+    border: 2px solid #d1d5db;
+    background: #f9fafb;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+    transition:
+        border 0.2s,
+        background 0.2s,
+        color 0.2s;
+    padding: 0 16px;
+    user-select: none;
+}
+
+.floor-btn.selected,
+.room-btn.selected {
+    background: #194890;
+    color: #fff;
+    border-color: #194890;
+}
+
+.room-btn.disabled,
+.room-btn:disabled {
+    color: #aaa !important;
+    background: #f3f4f6 !important;
+    border-color: #e5e7eb !important;
+    cursor: not-allowed;
+}
+
+/* 예시: 버튼 스타일 */
+.next-step-btn,
+.prev-step-btn {
+    background: #194890;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.next-step-btn:hover,
+.prev-step-btn:hover {
+    background: #2563eb;
+}
+
+.step-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 12px;
+    padding: 1.5rem 0;
+    margin-bottom: 1rem;
+
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.step-btn {
+    background: #f3f4f6;
+    color: #194890;
+    border: none;
+    border-radius: 20px;
+    padding: 0.7rem 2.2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background 0.2s,
+        color 0.2s;
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #e2e8f0;
+    color: #475569;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.step-btn.active {
+    background: #194890 !important;
+    color: #fff !important;
+    background-color: #1e3a8a;
+    color: white;
+}
+
+.step-btn:disabled {
+    background: #e5e7eb;
+    color: #b0b5c0;
+    cursor: not-allowed;
+}
+
+.step-divider {
+    font-size: 1.3rem;
+    color: #b0b5c0;
+    font-weight: 700;
+}
+
+.step-nav-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem 0 1.5rem 0;
+}
+
+.step-arrow-btn {
+    background: #194890;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.step-arrow-btn:disabled {
+    background: #e5e7eb;
+    color: #b0b5c0;
+    cursor: not-allowed;
+}
+
+.step-label {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #194890;
+    min-width: 90px;
+    text-align: center;
+}
+
+.risk-radio-group {
+    display: flex;
+    width: 300px;
+}
+
+.risk-radio-label {
+    display: flex;
+    align-items: center;
+    border-radius: 16px;
+    width: 400px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition:
+        background 0.2s,
+        border 0.2s,
+        color 0.2s;
+}
+
+.risk-radio-label span {
+    /* 텍스트에만 테두리 적용 */
+
+    border: 2px solid transparent;
+    border-radius: 16px;
+    padding: 0.3rem; /* 텍스트 주변 여백 */
+}
+
+.risk-radio-label.low span {
+    background: #e6fbe6;
+    color: #1ca51c;
+}
+
+.risk-radio-label.mid span {
+    background: #fff7e0;
+    color: #ff9800;
+}
+
+.risk-radio-label.high span {
+    background: #ffeaea;
+    color: #e53935;
+}
+
+.risk-radio-label.low {
+    color: #1ca51c;
+    background: #e6fbe6;
+    border-color: #1ca51c;
+}
+
+.risk-radio-label.mid {
+    color: #ff9800;
+    background: #fff7e0;
+    border-color: #ff9800;
+}
+
+.risk-radio-label.high {
+    color: #e53935;
+    background: #ffeaea;
+    border-color: #e53935;
+}
+
+.risk-radio-input {
+    width: 40px !important;
+}
+
+.patient-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile-image-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-content {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
 }

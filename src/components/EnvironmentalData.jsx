@@ -167,23 +167,31 @@ const EnvironmentalData = () => {
         <div className="environmental-data-page">
             <div className="environmental-data-container">
                 <div className="sidebar">
-                    <h2 className="sidebar-title">모니터링 병실</h2>
+                    <h2 className="sidebar-title">생활실 모니터링</h2>
                     <div className="filter-floor">
-                        <label htmlFor="floor-select">층 선택:</label>
-                        <select
-                            id="floor-select"
-                            value={selectedFloor}
-                            onChange={(e) => setSelectedFloor(e.target.value)}
-                            className="floor-select"
-                        >
-                            <option value="all">모든 층</option>
-                            <option value="warning">경고</option>
+                        <div className="floor-tabs">
+                            {/* <button
+                                className={`floor-tab${selectedFloor === 'all' ? ' active' : ''}`}
+                                onClick={() => setSelectedFloor('all')}
+                            >
+                                모든 층
+                            </button> */}
+                            <button
+                                className={`floor-tab${selectedFloor === 'warning' ? ' active' : ''}`}
+                                onClick={() => setSelectedFloor('warning')}
+                            >
+                                경고
+                            </button>
                             {floors.map((floor) => (
-                                <option key={floor} value={floor}>
-                                    {floor}층
-                                </option>
+                                <button
+                                    key={floor}
+                                    className={`floor-tab${selectedFloor === floor ? ' active' : ''}`}
+                                    onClick={() => setSelectedFloor(floor)}
+                                >
+                                    {floor}F
+                                </button>
                             ))}
-                        </select>
+                        </div>
                     </div>
                     <div className="room-list">
                         {floors.map((floor) => {
@@ -240,10 +248,11 @@ const EnvironmentalData = () => {
                 </div>
 
                 <div className="main-detail">
-                    <div className="detail-header">
+                    <div className={`detail-header ${selectedRoom.status === '경고' ? 'warning' : 'normal'}`}>
                         <div className="detail-title">
-                            <h1>{selectedRoom.roomName}호 환경 상태</h1>
+                            <h1> {selectedRoom.roomName}호 환경 상태</h1>
                         </div>
+
                         <div className="toggle-input-group">
                             <div
                                 className={`toggle-input ${metric === 'temperature' ? 'active' : ''}`}
@@ -299,7 +308,7 @@ const EnvironmentalData = () => {
                                         {range.min}
                                         {metric === 'temperature' ? '°C' : '%'}
                                     </span>
-                                    <span>{metric === 'temperature' ? '27°C' : '56.5%'}</span>
+                                    <span>{metric === 'temperature' ? '25°C' : '55%'}</span>
                                     <span>
                                         {range.max}
                                         {metric === 'temperature' ? '°C' : '%'}

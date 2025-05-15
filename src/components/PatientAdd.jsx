@@ -30,9 +30,11 @@ const PatientAdd = () => {
     const [rooms, setRooms] = useState([]);
     const [selectedRoom, setSelectedRoom] = useState('');
     const [availableBeds, setAvailableBeds] = useState([]);
+    const [selectedFloor, setSelectedFloor] = useState('');
     const leftPanelRef = useRef(null);
     const hospitalInfoRef = useRef(null);
     const [memoHeight, setMemoHeight] = useState(300);
+    const [step, setStep] = useState(1);
 
     // 기존 useEffect 유지
     useEffect(() => {
@@ -67,12 +69,17 @@ const PatientAdd = () => {
         }
 
         try {
-            const response = await axios.get(`${API_BASE_URL}/rooms/${roomName}`);
+            const roomNum = parseInt(roomName.replace(/\D/g, '')); // "201호" → 201
+            const baseId = (Math.floor(roomNum / 100) - 1) * 16 + ((roomNum % 100) - 1) * 4 + 1;
+
+            console.log('roomNum:', roomNum); // ← 201 확인
+            console.log('baseId:', baseId); // ← 17 확인
+
+            const response = await axios.get(`${API_BASE_URL}/rooms/${roomNum}`);
 
             if (response.data.code === 0) {
                 const roomData = response.data.data;
 
-                // 현재 입원한 환자 수와 총 침대 수 비교
                 if (roomData.patient_count >= roomData.room_capacity) {
                     alert('이 병실은 현재 만실입니다.');
                     setSelectedRoom('');
@@ -80,26 +87,20 @@ const PatientAdd = () => {
                     return;
                 }
 
-                // 사용 중인 침대 ID Set으로 만들기
                 const occupiedBedIds = new Set(roomData.patients.map((p) => p.bed_id));
 
-                // room_name과 병실 번호로 bed_id 범위 계산
-                const roomNum = parseInt(roomName);
-                const baseId = (roomNum - 101) * 4 + 1; // 101호는 1~4, 102호는 5~8, 103호는 9~12...
-
-                // 빈 침대 계산
                 const emptyBeds = [];
                 for (let i = 0; i < roomData.room_capacity; i++) {
                     const currentBedId = baseId + i;
                     if (!occupiedBedIds.has(currentBedId)) {
                         emptyBeds.push({
                             bed_id: currentBedId,
-                            bed_num: String.fromCharCode(65 + i), // A, B, C, D로 변환
+                            bed_num: String.fromCharCode(65 + i),
                         });
                     }
                 }
 
-                console.log('Available beds:', emptyBeds); // 디버깅용
+                console.log('emptyBeds:', emptyBeds); // ✅ bed_id가 17~20인지 확인
                 setAvailableBeds(emptyBeds);
             }
         } catch (error) {
@@ -182,211 +183,355 @@ const PatientAdd = () => {
                         <X size={16} />
                         취소
                     </button>
-                    <button className="submit-button" onClick={handleSubmit}>
-                        등록
-                    </button>
+                    {step === 2 ? (
+                        <button className="submit-button" onClick={handleSubmit}>
+                            등록
+                        </button>
+                    ) : null}
                 </div>
             </div>
 
-            <div className="profile-upload-section">
-                <div className="profile-image-large" style={{ margin: 0 }}>
-                    {imagePreview ? (
-                        <img src={imagePreview} alt="환자 프로필 미리보기" className="profile-image" />
-                    ) : (
-                        <div className="profile-placeholder">
-                            <span>?</span>
+            <div className="form-container">
+                <div className="patient-info-container">
+                    <div className="profile-upload-section">
+                        <div className="profile-image-area">
+                            <div className="profile-image-large" style={{ margin: 0 }}>
+                                {imagePreview ? (
+                                    <img src={imagePreview} alt="환자 프로필 미리보기" className="profile-image" />
+                                ) : (
+                                    <div className="profile-placeholder">
+                                        <span>?</span>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="profile-upload">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                    id="profile-upload"
+                                    className="profile-input"
+                                />
+                                <label htmlFor="profile-upload" className="profile-upload-button">
+                                    프로필 사진 업로드
+                                </label>
+                            </div>
                         </div>
-                    )}
-                </div>
-                <div className="profile-upload">
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                        id="profile-upload"
-                        className="profile-input"
-                    />
-                    <label htmlFor="profile-upload" className="profile-upload-button">
-                        프로필 사진 업로드
-                    </label>
+
+                        <div className="step-banner">
+                            <button
+                                type="button"
+                                className={`step-btn${step === 1 ? ' active' : ''}`}
+                                onClick={() => setStep(1)}
+                            >
+                                기본 정보
+                            </button>
+                            <span className="step-divider">|</span>
+                            <button
+                                type="button"
+                                className={`step-btn${step === 2 ? ' active' : ''}`}
+                                onClick={() => setStep(2)}
+                                disabled={
+                                    !newPatient.patient_name || !newPatient.patient_sex || !newPatient.patient_birth
+                                }
+                            >
+                                입원 정보
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="form-content">
+                        {step === 1 ? (
+                            <div className="patient-basic-info">
+                                <h3>기본 정보</h3>
+                                <div className="info-row">
+                                    <span>이름</span>
+                                    <input
+                                        type="text"
+                                        name="patient_name"
+                                        value={newPatient.patient_name}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                </div>
+                                <div className="info-row gender-row">
+                                    <span>성별</span>
+                                    <div className="gender-radio-group">
+                                        <label
+                                            className={`gender-radio-label${
+                                                newPatient.patient_sex === 'Male' ? ' selected' : ''
+                                            }`}
+                                        >
+                                            <span className="gender-icon male">&#9794;</span>
+                                            <input
+                                                type="radio"
+                                                name="patient_sex"
+                                                value="Male"
+                                                checked={newPatient.patient_sex === 'Male'}
+                                                onChange={handleInputChange}
+                                                required
+                                            />
+                                            <span className="gender-text">남</span>
+                                        </label>
+                                        <label
+                                            className={`gender-radio-label${
+                                                newPatient.patient_sex === 'Female' ? ' selected' : ''
+                                            }`}
+                                        >
+                                            <span className="gender-icon female">&#9792;</span>
+                                            <input
+                                                type="radio"
+                                                name="patient_sex"
+                                                value="Female"
+                                                checked={newPatient.patient_sex === 'Female'}
+                                                onChange={handleInputChange}
+                                                required
+                                            />
+                                            <span className="gender-text">여</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="info-row">
+                                    <span>생년월일</span>
+                                    <input
+                                        type="date"
+                                        name="patient_birth"
+                                        value={newPatient.patient_birth}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                </div>
+                                <div className="info-row">
+                                    <span>혈액형</span>
+                                    <select
+                                        name="patient_blood"
+                                        value={newPatient.patient_blood}
+                                        onChange={handleInputChange}
+                                        required
+                                    >
+                                        <option value="">선택하세요</option>
+                                        <option value="A">A형</option>
+                                        <option value="B">B형</option>
+                                        <option value="O">O형</option>
+                                        <option value="AB">AB형</option>
+                                    </select>
+                                </div>
+                                <div className="info-row">
+                                    <span>키</span>
+                                    <input
+                                        type="number"
+                                        name="patient_height"
+                                        value={newPatient.patient_height}
+                                        onChange={handleInputChange}
+                                        required
+                                        placeholder="cm"
+                                    />
+                                </div>
+                                <div className="info-row">
+                                    <span>체중</span>
+                                    <input
+                                        type="number"
+                                        name="patient_weight"
+                                        value={newPatient.patient_weight}
+                                        onChange={handleInputChange}
+                                        required
+                                        placeholder="kg"
+                                    />
+                                </div>
+                                <div style={{ marginTop: '2rem', textAlign: 'right' }}>
+                                    <button type="button" className="next-step-btn" onClick={() => setStep(2)}>
+                                        다음 단계 →
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="hospital-info" ref={hospitalInfoRef}>
+                                <h3>입원 정보</h3>
+                                <div className="info-row">
+                                    <span>입원 날짜</span>
+                                    <input
+                                        type="date"
+                                        name="patient_in"
+                                        value={newPatient.patient_in}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                </div>
+                                <div className="info-row">
+                                    <span>퇴원 예정일</span>
+                                    <input
+                                        type="date"
+                                        name="patient_out"
+                                        value={newPatient.patient_out}
+                                        onChange={handleInputChange}
+                                        min={newPatient.patient_in}
+                                    />
+                                </div>
+                                <div className="info-row">
+                                    <span>층수 선택</span>
+                                    <div className="floor-select-group">
+                                        {Array.from(
+                                            new Set(rooms.map((room) => String(room.room_name).slice(0, 1)))
+                                        ).map((floor) => (
+                                            <button
+                                                key={floor}
+                                                type="button"
+                                                className={`floor-btn${selectedFloor === floor ? ' selected' : ''}`}
+                                                onClick={() => {
+                                                    setSelectedRoom('');
+                                                    setAvailableBeds([]);
+                                                    setNewPatient((prev) => ({ ...prev, bed_id: '' }));
+                                                    setSelectedFloor(floor);
+                                                }}
+                                            >
+                                                {floor}층
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="info-row">
+                                    <span>병실 선택</span>
+                                    {selectedFloor ? (
+                                        <div className="room-select-group">
+                                            {rooms
+                                                .filter((room) => String(room.room_name).startsWith(selectedFloor))
+                                                .map((room) => (
+                                                    <button
+                                                        key={room.room_name}
+                                                        type="button"
+                                                        className={`room-btn${
+                                                            selectedRoom === room.room_name ? ' selected' : ''
+                                                        }${room.room_capacity === 0 ? ' disabled' : ''}`}
+                                                        onClick={() => {
+                                                            if (room.room_capacity === 0) return;
+                                                            handleRoomChange(room.room_name);
+                                                        }}
+                                                        disabled={room.room_capacity === 0}
+                                                    >
+                                                        {room.room_name}호{room.room_capacity === 0 ? ' (만실)' : ''}
+                                                    </button>
+                                                ))}
+                                        </div>
+                                    ) : (
+                                        <div style={{ color: '#aaa', padding: '8px 0' }}>먼저 층수를 선택하세요</div>
+                                    )}
+                                </div>
+                                <div className="info-row">
+                                    <span>침대 번호</span>
+                                    <div className="bed-radio-group">
+                                        {availableBeds.length === 0 ? (
+                                            <span style={{ color: '#aaa' }}>선택 가능한 침대 없음</span>
+                                        ) : (
+                                            availableBeds.map((bed) => {
+                                                const isSelected = String(newPatient.bed_id) === String(bed.bed_id);
+                                                return (
+                                                    <label
+                                                        key={`${selectedRoom}-${bed.bed_num}`}
+                                                        className={`bed-radio-label${isSelected ? ' selected' : ''}`}
+                                                    >
+                                                        <input
+                                                            type="radio"
+                                                            name="bed_id"
+                                                            value={bed.bed_id}
+                                                            checked={isSelected}
+                                                            onChange={handleInputChange}
+                                                            required
+                                                            disabled={!selectedRoom}
+                                                        />
+                                                        <span>{bed.bed_num}</span>
+                                                    </label>
+                                                );
+                                            })
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="info-row">
+                                    <span>위험도</span>
+                                    <div className="risk-radio-group">
+                                        <label
+                                            className={`risk-radio-label low${
+                                                newPatient.patient_status === '무위험군' ? ' selected' : ''
+                                            }`}
+                                        >
+                                            <input
+                                                type="radio"
+                                                name="patient_status"
+                                                value="무위험군"
+                                                checked={newPatient.patient_status === '무위험군'}
+                                                onChange={handleInputChange}
+                                                required
+                                                className="risk-radio-input" // 클래스 이름 추가
+                                            />
+                                            <span>무위험군</span>
+                                        </label>
+                                        <label
+                                            className={`risk-radio-label mid${
+                                                newPatient.patient_status === '저위험군' ? ' selected' : ''
+                                            }`}
+                                        >
+                                            <input
+                                                type="radio"
+                                                name="patient_status"
+                                                value="저위험군"
+                                                checked={newPatient.patient_status === '저위험군'}
+                                                onChange={handleInputChange}
+                                                required
+                                                className="risk-radio-input" // 클래스 이름 추가
+                                            />
+                                            <span>저위험군</span>
+                                        </label>
+                                        <label
+                                            className={`risk-radio-label high${
+                                                newPatient.patient_status === '고위험군' ? ' selected' : ''
+                                            }`}
+                                        >
+                                            <input
+                                                type="radio"
+                                                name="patient_status"
+                                                value="고위험군"
+                                                checked={newPatient.patient_status === '고위험군'}
+                                                onChange={handleInputChange}
+                                                required
+                                                className="risk-radio-input" // 클래스 이름 추가
+                                            />
+                                            <span>고위험군</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="info-row">
+                                    <span>보호자 전화</span>
+                                    <input
+                                        type="tel"
+                                        name="guardian_id"
+                                        value={newPatient.guardian_id}
+                                        onChange={handleInputChange}
+                                        placeholder="010-0000-0000"
+                                        pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
+                                    />
+                                </div>
+                                <div className="memo-info" style={{ height: memoHeight }}>
+                                    <h3>메모</h3>
+                                    <textarea
+                                        name="patient_memo"
+                                        value={newPatient.patient_memo}
+                                        onChange={handleInputChange}
+                                        rows="5"
+                                        placeholder="환자에 대한 메모를 입력하세요"
+                                    />
+                                </div>
+                                <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'space-between' }}>
+                                    <button type="button" className="prev-step-btn" onClick={() => setStep(1)}>
+                                        ← 이전 단계
+                                    </button>
+                                    <button className="submit-button" type="submit">
+                                        등록
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-
-            <form onSubmit={handleSubmit} className="form-panels">
-                <div className="left-panel" ref={leftPanelRef}>
-                    <div className="patient-basic-info">
-                        <h3>기본 정보</h3>
-                        <div className="info-row">
-                            <span>이름</span>
-                            <input
-                                type="text"
-                                name="patient_name"
-                                value={newPatient.patient_name}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="info-row">
-                            <span>성별</span>
-                            <select
-                                name="patient_sex"
-                                value={newPatient.patient_sex}
-                                onChange={handleInputChange}
-                                required
-                            >
-                                <option value="">선택하세요</option>
-                                <option value="Male">남성</option>
-                                <option value="Female">여성</option>
-                            </select>
-                        </div>
-                        <div className="info-row">
-                            <span>생년월일</span>
-                            <input
-                                type="date"
-                                name="patient_birth"
-                                value={newPatient.patient_birth}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="info-row">
-                            <span>혈액형</span>
-                            <select
-                                name="patient_blood"
-                                value={newPatient.patient_blood}
-                                onChange={handleInputChange}
-                                required
-                            >
-                                <option value="">선택하세요</option>
-                                <option value="A">A형</option>
-                                <option value="B">B형</option>
-                                <option value="O">O형</option>
-                                <option value="AB">AB형</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div className="vital-signs">
-                        <h3>신체 정보</h3>
-                        <div className="info-row">
-                            <span>키</span>
-                            <input
-                                type="number"
-                                name="patient_height"
-                                value={newPatient.patient_height}
-                                onChange={handleInputChange}
-                                required
-                                placeholder="cm"
-                            />
-                        </div>
-                        <div className="info-row">
-                            <span>체중</span>
-                            <input
-                                type="number"
-                                name="patient_weight"
-                                value={newPatient.patient_weight}
-                                onChange={handleInputChange}
-                                required
-                                placeholder="kg"
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <div className="right-panel">
-                    <div className="hospital-info" ref={hospitalInfoRef}>
-                        <h3>입원 정보</h3>
-                        <div className="info-row">
-                            <span>입원 날짜</span>
-                            <input
-                                type="date"
-                                name="patient_in"
-                                value={newPatient.patient_in}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="info-row">
-                            <span>퇴원 예정일</span>
-                            <input
-                                type="date"
-                                name="patient_out"
-                                value={newPatient.patient_out}
-                                onChange={handleInputChange}
-                                min={newPatient.patient_in}
-                            />
-                        </div>
-                        <div className="info-row">
-                            <span>병실 선택</span>
-                            <select
-                                name="room"
-                                value={selectedRoom}
-                                onChange={(e) => handleRoomChange(e.target.value)}
-                                required
-                            >
-                                <option value="">병실을 선택하세요</option>
-                                {rooms.map((room) => (
-                                    <option key={room.room_name} value={room.room_name}>
-                                        {room.room_name}호
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="info-row">
-                            <span>침대 번호</span>
-                            <select
-                                name="bed_id"
-                                value={newPatient.bed_id}
-                                onChange={handleInputChange}
-                                required
-                                disabled={!selectedRoom}
-                            >
-                                <option value="">침대를 선택하세요</option>
-                                {availableBeds.map((bed) => (
-                                    <option key={`${selectedRoom}-${bed.bed_num}`} value={bed.bed_id}>
-                                        {bed.bed_num}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="info-row">
-                            <span>위험도</span>
-                            <select
-                                name="patient_status"
-                                value={newPatient.patient_status}
-                                onChange={handleInputChange}
-                                required
-                            >
-                                <option value="무위험군">무위험군</option>
-                                <option value="저위험군">저위험군</option>
-                                <option value="고위험군">고위험군</option>
-                            </select>
-                        </div>
-                        <div className="info-row">
-                            <span>보호자 전화</span>
-                            <input
-                                type="tel"
-                                name="guardian_id"
-                                value={newPatient.guardian_id}
-                                onChange={handleInputChange}
-                                placeholder="010-0000-0000"
-                                pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="memo-info" style={{ height: memoHeight }}>
-                        <h3>메모</h3>
-                        <textarea
-                            name="patient_memo"
-                            value={newPatient.patient_memo}
-                            onChange={handleInputChange}
-                            rows="5"
-                            placeholder="환자에 대한 메모를 입력하세요"
-                        />
-                    </div>
-                </div>
-            </form>
         </div>
     );
 };

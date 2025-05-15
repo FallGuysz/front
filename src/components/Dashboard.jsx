@@ -167,8 +167,8 @@ export default function Dashboard() {
     return (
         <div className="dashboard-page">
             <header className="dashboard-header">
-                <h1 className="dashboard-title">스마트 케어 대시보드</h1>
-                <p className="dashboard-subtitle">실시간 병원 모니터링 현황 및 정보를 확인하세요</p>
+                <h1 className="dashboard-title">사랑하는 가족의 하루를 한눈에</h1>
+                <p className="dashboard-subtitle">당신의 소중한 가족, 저희가 실시간으로 함께 지킵니다.</p>
             </header>
 
             {/* 응급 알림 + 개요 통계 + 모니터링 + 사이드바 */}

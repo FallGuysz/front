@@ -210,8 +210,8 @@ const Schedule = () => {
 
     return (
         <div className="schedule-container">
-            <h1 className="schedule-title">일정 관리</h1>
-            <p className="schedule-subtitle">환자 치료 및 병원 행사 일정을 관리합니다.</p>
+            <h1 className="schedule-title">일정표</h1>
+            <p className="schedule-subtitle">진료, 활동, 행사 일정을 간편하게 확인할 수 있습니다.</p>
 
             <div className="schedule-content">
                 {/* 캘린더 카드 */}

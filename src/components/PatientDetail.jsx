@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Edit2, Save, X, User } from 'lucide-react';
 import axios from 'axios';
 import '../styles/components/PatientDetail.css';
-import HumanModel3D from './HumanModel3D';
 
 const API_BASE_URL = 'http://localhost:3000';
 
@@ -15,6 +14,7 @@ const PatientDetail = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [randomBodyImage, setRandomBodyImage] = useState('');
 
     useEffect(() => {
         const fetchPatientDetail = async () => {
@@ -38,6 +38,9 @@ const PatientDetail = () => {
                 setPatient(patientData);
                 setEditedPatient(patientData);
                 setLoading(false);
+
+                // 랜덤 이미지 선택
+                selectRandomBodyImage();
             } catch (err) {
                 console.error('Error fetching patient details:', err);
                 setError('환자 정보를 불러오는데 실패했습니다.');
@@ -55,6 +58,25 @@ const PatientDetail = () => {
             }
         };
     }, [id]);
+
+    // 랜덤 이미지 선택 함수
+    const selectRandomBodyImage = () => {
+        const bodyImages = [
+            'rshRarm.png',
+            'RshLarm.png',
+            'right_arm.png',
+            'r_sh.png',
+            'r_leg.png',
+            'r_armLsh.png',
+            'l_sh.png',
+            'l_leg.png',
+            'l_arm+l_sh.png',
+            'l_arm.png',
+        ];
+
+        const randomIndex = Math.floor(Math.random() * bodyImages.length);
+        setRandomBodyImage(bodyImages[randomIndex]);
+    };
 
     const handleInputChange = (field, value) => {
         setEditedPatient((prev) => ({
@@ -544,10 +566,59 @@ const PatientDetail = () => {
                     <div className="body-diagram">
                         <h3>증상 체크</h3>
                         <div className="body-model">
-                            <HumanModel3D
-                                symptoms={patient.symptoms}
-                                onSymptomAdd={isEditing ? handleSymptomAdd : undefined}
-                            />
+                            <div
+                                style={{
+                                    position: 'relative',
+                                    width: '100%',
+                                    height: '770px',
+                                    background: '#f8fafc',
+                                    borderRadius: '8px',
+                                    overflow: 'hidden',
+                                }}
+                            >
+                                <img
+                                    src={`/images/body/${randomBodyImage}`}
+                                    alt="인체 모형"
+                                    style={{
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        transform: 'translate(-50%, -50%)',
+                                        width: '100%',
+                                        height: 'auto',
+                                        objectFit: 'contain',
+                                    }}
+                                    onClick={
+                                        isEditing
+                                            ? (e) => {
+                                                  const rect = e.currentTarget.getBoundingClientRect();
+                                                  const x = ((e.clientX - rect.left) / rect.width) * 100;
+                                                  const y = ((e.clientY - rect.top) / rect.height) * 100;
+                                                  handleSymptomAdd({ x, y });
+                                              }
+                                            : undefined
+                                    }
+                                />
+
+                                {patient?.symptoms?.map((symptom, index) => (
+                                    <div
+                                        key={index}
+                                        className="symptom-marker"
+                                        style={{
+                                            position: 'absolute',
+                                            top: `${symptom.y}%`,
+                                            left: `${symptom.x}%`,
+                                            width: '10px',
+                                            height: '10px',
+                                            background: '#ef4444',
+                                            borderRadius: '50%',
+                                            transform: 'translate(-50%, -50%)',
+                                            zIndex: 10,
+                                        }}
+                                        title={symptom.description}
+                                    />
+                                ))}
+                            </div>
                         </div>
                     </div>
 

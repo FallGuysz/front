@@ -59,7 +59,10 @@ const RoomManagement = () => {
 
                 const totalBeds = roomsData.reduce((sum, room) => sum + (Number(room.total_beds) || 0), 0);
                 const occupiedBeds = roomsData.reduce((sum, room) => sum + (Number(room.occupied_beds) || 0), 0);
-                const warningRooms = roomsData.filter((room) => room.room_temp > 26 || room.room_temp < 20).length;
+                const warningRooms = roomsData.filter(
+                    (room) =>
+                        room.room_temp > 28 || room.room_temp < 26 || room.room_humidity > 65 || room.room_humidity < 48
+                ).length;
 
                 const percentage = totalBeds > 0 ? ((occupiedBeds / totalBeds) * 100).toFixed(1) : '0.0';
 
@@ -128,9 +131,15 @@ const RoomManagement = () => {
         return grouped;
     };
 
+    // 온도 상태 체크 함수 수정
     const getRoomStatus = (room_temp) => {
-        if (room_temp >= 28) return '높음';
-        if (room_temp >= 26) return '중간';
+        if (room_temp > 28 || room_temp < 26) return '경고';
+        return '정상';
+    };
+
+    // 습도 상태 체크 함수 수정
+    const getHumidityStatus = (humidity) => {
+        if (humidity > 65 || humidity < 48) return '경고';
         return '정상';
     };
 
@@ -163,8 +172,8 @@ const RoomManagement = () => {
 
     return (
         <div className="dashboard-container">
-            <h1 className="dashboard-title">병실 관리</h1>
-            <p className="dashboard-subtitle">병실 정보 및 환자 현황을 관리하세요</p>
+            <h1 className="dashboard-title">병실 상태 모니터링</h1>
+            <p className="dashboard-subtitle">입원 중인 가족의 병실 정보를 실시간으로 제공합니다</p>
 
             {/* 주요 통계 */}
             <div className="stats-overview">
@@ -298,7 +307,7 @@ const RoomManagement = () => {
                                             <Thermometer size={20} className="temp-icon" />
                                             <span>{Number(selectedRoom.room_temp).toFixed(1)}°C</span>
                                         </div>
-                                        <p className="detail-reference">기준: 26°C</p>
+                                        <p className="detail-reference">기준: 26°C ~ 28°C</p>
                                     </div>
                                     <div className="detail-card">
                                         <h3>습도</h3>
@@ -306,7 +315,7 @@ const RoomManagement = () => {
                                             <Droplets size={20} className="humi-icon" />
                                             <span>{selectedRoom.room_humi}%</span>
                                         </div>
-                                        <p className="detail-reference">기준: 60%</p>
+                                        <p className="detail-reference">기준: 48% ~ 65%</p>
                                     </div>
                                     <div className="detail-card">
                                         <h3>상태</h3>
