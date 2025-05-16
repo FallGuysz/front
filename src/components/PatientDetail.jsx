@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Edit2, Save, X, User } from 'lucide-react';
+import { ArrowLeft, Edit2, Save, X, User, PlusCircle } from 'lucide-react';
 import axios from 'axios';
 import '../styles/components/PatientDetail.css';
 
@@ -266,7 +266,9 @@ const PatientDetail = () => {
             </div>
 
             <div className="medical-record">
+                {/* 좌측 패널 */}
                 <div className="left-panel">
+                    {/* 기본 정보 섹션 */}
                     <div className="patient-basic-info">
                         <h3>기본 정보</h3>
                         <div className="profile-section">
@@ -311,7 +313,7 @@ const PatientDetail = () => {
                                     onChange={(e) => handleInputChange('patient_name', e.target.value)}
                                 />
                             ) : (
-                                <span>{patient.patient_name || '-'}</span>
+                                <span style={{ fontWeight: 'bold', color: '#333' }}>{patient.patient_name || '-'}</span>
                             )}
                         </div>
                         <div className="info-row">
@@ -323,7 +325,7 @@ const PatientDetail = () => {
                                     onChange={(e) => handleInputChange('patient_birth', e.target.value)}
                                 />
                             ) : (
-                                <span>
+                                <span style={{ fontWeight: 'bold', color: '#555' }}>
                                     {patient.patient_birth
                                         ? `${formatDate(patient.patient_birth)} (${calculateAge(
                                               patient.patient_birth
@@ -361,51 +363,134 @@ const PatientDetail = () => {
                                     <option value="Female">여성</option>
                                 </select>
                             ) : (
-                                <span>{patient.patient_sex || '-'}</span>
+                                <span>
+                                    {patient.patient_sex === 'Male' ? (
+                                        <span style={{ color: 'blue', fontWeight: 'bold' }}>♂ 남성</span>
+                                    ) : patient.patient_sex === 'Female' ? (
+                                        <span style={{ color: 'red', fontWeight: 'bold' }}>♀ 여성</span>
+                                    ) : (
+                                        '-'
+                                    )}
+                                </span>
                             )}
                         </div>
                     </div>
 
-                    <div className="vital-signs">
+                    {/* Body Diagram 섹션 */}
+                    <div className="body-diagram">
                         <h3>신체 정보</h3>
-                        <div className="info-row">
-                            <span>키</span>
-                            {isEditing ? (
-                                <input
-                                    type="number"
-                                    value={editedPatient.patient_height || ''}
-                                    onChange={(e) => handleInputChange('patient_height', e.target.value)}
-                                    placeholder="cm"
+                        <div className="body-image">
+                            <div
+                                style={{
+                                    position: 'relative',
+                                    width: '100%',
+                                    height: '770px',
+                                    background: '#f8fafc',
+                                    borderRadius: '8px',
+                                    overflow: 'hidden',
+                                }}
+                            >
+                                <img
+                                    src={`/images/body/${randomBodyImage}`}
+                                    alt="인체 모형"
+                                    style={{
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        transform: 'translate(-50%, -50%)',
+                                        width: '100%',
+                                        height: 'auto',
+                                        objectFit: 'contain',
+                                    }}
+                                    onClick={
+                                        isEditing
+                                            ? (e) => {
+                                                  const rect = e.currentTarget.getBoundingClientRect();
+                                                  const x = ((e.clientX - rect.left) / rect.width) * 100;
+                                                  const y = ((e.clientY - rect.top) / rect.height) * 100;
+                                                  handleSymptomAdd({ x, y });
+                                              }
+                                            : undefined
+                                    }
                                 />
-                            ) : (
-                                <span>{patient.patient_height ? `${patient.patient_height}cm` : '-'}</span>
-                            )}
+
+                                {patient?.symptoms?.map((symptom, index) => (
+                                    <div
+                                        key={index}
+                                        className="symptom-marker"
+                                        style={{
+                                            position: 'absolute',
+                                            top: `${symptom.y}%`,
+                                            left: `${symptom.x}%`,
+                                            width: '10px',
+                                            height: '10px',
+                                            background: '#ef4444',
+                                            borderRadius: '50%',
+                                            transform: 'translate(-50%, -50%)',
+                                            zIndex: 10,
+                                        }}
+                                        title={symptom.description}
+                                    />
+                                ))}
+                            </div>
                         </div>
-                        <div className="info-row">
-                            <span>체중</span>
-                            {isEditing ? (
-                                <input
-                                    type="number"
-                                    value={editedPatient.patient_weight || ''}
-                                    onChange={(e) => handleInputChange('patient_weight', e.target.value)}
-                                    placeholder="kg"
-                                />
-                            ) : (
-                                <span>{patient.patient_weight ? `${patient.patient_weight}kg` : '-'}</span>
-                            )}
+                        <p style={{ textAlign: 'center' }}>&lt;통증부위&gt;</p>
+                        <div>
+                            <br></br>
                         </div>
-                        <div className="info-row">
-                            <span>BMI</span>
-                            <span>
-                                {patient.patient_height && patient.patient_weight
-                                    ? (patient.patient_weight / Math.pow(patient.patient_height / 100, 2)).toFixed(1)
-                                    : '-'}
-                            </span>
+
+                        <div className="vital-signs-container">
+                            <div className="vital-sign">
+                                <span className="vital-value">
+                                    {isEditing ? (
+                                        <input
+                                            type="number"
+                                            value={editedPatient.patient_height || ''}
+                                            onChange={(e) => handleInputChange('patient_height', e.target.value)}
+                                            placeholder="cm"
+                                        />
+                                    ) : (
+                                        patient.patient_height || '-'
+                                    )}
+                                </span>
+                                <span className="vital-label">키</span>
+                            </div>
+                            <div className="vital-sign">
+                                <span className="vital-value">
+                                    {isEditing ? (
+                                        <input
+                                            type="number"
+                                            value={editedPatient.patient_weight || ''}
+                                            onChange={(e) => handleInputChange('patient_weight', e.target.value)}
+                                            placeholder="kg"
+                                        />
+                                    ) : (
+                                        patient.patient_weight || '-'
+                                    )}
+                                </span>
+                                <span className="vital-label">몸무게</span>
+                            </div>
+                            <div className="vital-sign">
+                                <span className="vital-value">
+                                    {patient.patient_height && patient.patient_weight
+                                        ? (
+                                              patient.patient_weight /
+                                              ((patient.patient_height / 100) * (patient.patient_height / 100))
+                                          ).toFixed(1)
+                                        : '-'}
+                                </span>
+                                <span className="vital-label">BMI</span>
+                            </div>
                         </div>
                     </div>
+                </div>
 
+                {/* 우측 패널 */}
+                <div className="right-panel">
+                    {/* 입원 정보 섹션 */}
                     <div className="hospital-info">
                         <h3>입원 정보</h3>
+                        <div className="summary-row"></div>
                         <div className="info-row">
                             <span>병실</span>
                             <span>{patient.room_name ? `${patient.room_name}호` : '-'}</span>
@@ -418,49 +503,31 @@ const PatientDetail = () => {
                             <span>위험도</span>
                             {isEditing ? (
                                 <select
-                                    value={editedPatient.patient_status || '정상'}
+                                    value={editedPatient.patient_status || '저위험군'}
                                     onChange={(e) => handleInputChange('patient_status', e.target.value)}
                                 >
-                                    <option value="정상">정상</option>
-                                    <option value="주의">주의</option>
-                                    <option value="위험">위험</option>
+                                    <option value="저위험군">저위험군</option>
+                                    <option value="중위험군">중위험군</option>
+                                    <option value="고위험군">고위험군</option>
                                 </select>
                             ) : (
-                                <span className={`status ${patient.patient_status || 'normal'}`}>
-                                    {patient.patient_status || '정상'}
+                                <span className={`status ${patient.patient_status || '저위험군'}`}>
+                                    {patient.patient_status || '저위험군'}
                                 </span>
                             )}
                         </div>
                     </div>
 
-                    <div className="guardian-info">
-                        <h3>보호자 정보</h3>
-                        <div className="info-row">
-                            <span>연락처</span>
-                            {isEditing ? (
-                                <input
-                                    type="tel"
-                                    value={editedPatient.guardian_tel || ''}
-                                    onChange={(e) => handleInputChange('guardian_tel', e.target.value)}
-                                    placeholder="010-0000-0000"
-                                />
-                            ) : (
-                                <span>{patient.guardian_tel || '보호자 정보가 없습니다.'}</span>
-                            )}
-                        </div>
-                    </div>
-                </div>
-
-                <div className="right-panel">
+                    {/* 투약 정보 섹션 */}
                     <div className="medication-info">
-                        <div className="section-header">
-                            <h3>투약 정보</h3>
+                        <h3>
+                            투약 정보
                             {isEditing && (
                                 <button className="add-button" onClick={addMedication}>
                                     + 투약 정보 추가
                                 </button>
                             )}
-                        </div>
+                        </h3>
                         {isEditing ? (
                             editedPatient.medications?.map((med, index) => (
                                 <div key={index} className="medication-item">
@@ -563,65 +630,25 @@ const PatientDetail = () => {
                         )}
                     </div>
 
-                    <div className="body-diagram">
-                        <h3>증상 체크</h3>
-                        <div className="body-model">
-                            <div
-                                style={{
-                                    position: 'relative',
-                                    width: '100%',
-                                    height: '770px',
-                                    background: '#f8fafc',
-                                    borderRadius: '8px',
-                                    overflow: 'hidden',
-                                }}
-                            >
-                                <img
-                                    src={`/images/body/${randomBodyImage}`}
-                                    alt="인체 모형"
-                                    style={{
-                                        position: 'absolute',
-                                        top: '50%',
-                                        left: '50%',
-                                        transform: 'translate(-50%, -50%)',
-                                        width: '100%',
-                                        height: 'auto',
-                                        objectFit: 'contain',
-                                    }}
-                                    onClick={
-                                        isEditing
-                                            ? (e) => {
-                                                  const rect = e.currentTarget.getBoundingClientRect();
-                                                  const x = ((e.clientX - rect.left) / rect.width) * 100;
-                                                  const y = ((e.clientY - rect.top) / rect.height) * 100;
-                                                  handleSymptomAdd({ x, y });
-                                              }
-                                            : undefined
-                                    }
+                    {/* 보호자 정보 섹션 */}
+                    <div className="guardian-info">
+                        <h3>보호자 정보</h3>
+                        <div className="info-row">
+                            <span>연락처</span>
+                            {isEditing ? (
+                                <input
+                                    type="tel"
+                                    value={editedPatient.guardian_tel || ''}
+                                    onChange={(e) => handleInputChange('guardian_tel', e.target.value)}
+                                    placeholder="010-0000-0000"
                                 />
-
-                                {patient?.symptoms?.map((symptom, index) => (
-                                    <div
-                                        key={index}
-                                        className="symptom-marker"
-                                        style={{
-                                            position: 'absolute',
-                                            top: `${symptom.y}%`,
-                                            left: `${symptom.x}%`,
-                                            width: '10px',
-                                            height: '10px',
-                                            background: '#ef4444',
-                                            borderRadius: '50%',
-                                            transform: 'translate(-50%, -50%)',
-                                            zIndex: 10,
-                                        }}
-                                        title={symptom.description}
-                                    />
-                                ))}
-                            </div>
+                            ) : (
+                                <span>{patient.guardian_tel || '보호자 정보가 없습니다.'}</span>
+                            )}
                         </div>
                     </div>
 
+                    {/* 메모 섹션 */}
                     <div className="memo-info">
                         <h3>메모</h3>
                         {isEditing ? (
@@ -631,7 +658,7 @@ const PatientDetail = () => {
                                 placeholder="메모를 입력하세요"
                             />
                         ) : (
-                            <div className="memo-content">{patient.patient_memo || '메모가 없습니다.'}</div>
+                            <div className="memo-content">{patient.patient_memo || ''}</div>
                         )}
                     </div>
                 </div>

@@ -144,7 +144,9 @@ const PatientAdd = () => {
 
             Object.keys(newPatient).forEach((key) => {
                 if (key === 'bed_id') {
-                    formData.append(key, parseInt(newPatient.bed_id)); // 숫자로 변환
+                    formData.append(key, parseInt(newPatient.bed_id));
+                } else if (key === 'guardian_id') {
+                    formData.append(key, parseInt(newPatient.guardian_id));
                 } else if (key !== 'patient_img' || !newPatient[key]) {
                     formData.append(key, newPatient[key]);
                 }
@@ -185,7 +187,7 @@ const PatientAdd = () => {
                     </button>
                     {step === 2 ? (
                         <button className="submit-button" onClick={handleSubmit}>
-                            등록
+                            환자 등록
                         </button>
                     ) : null}
                 </div>
@@ -211,32 +213,28 @@ const PatientAdd = () => {
                                     onChange={handleImageChange}
                                     id="profile-upload"
                                     className="profile-input"
+                                    style={{ display: 'none' }}
                                 />
-                                <label htmlFor="profile-upload" className="profile-upload-button">
+                                <label
+                                    htmlFor="profile-upload"
+                                    className="profile-upload-button"
+                                    style={{
+                                        display: 'inline-block',
+                                        padding: '10px 20px',
+                                        backgroundColor: '#3498db',
+                                        color: 'white',
+                                        borderRadius: '6px',
+                                        cursor: 'pointer',
+                                        marginTop: '10px',
+                                        fontSize: '0.9rem',
+                                        fontWeight: '500',
+                                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                                        transition: 'all 0.2s',
+                                    }}
+                                >
                                     프로필 사진 업로드
                                 </label>
                             </div>
-                        </div>
-
-                        <div className="step-banner">
-                            <button
-                                type="button"
-                                className={`step-btn${step === 1 ? ' active' : ''}`}
-                                onClick={() => setStep(1)}
-                            >
-                                기본 정보
-                            </button>
-                            <span className="step-divider">|</span>
-                            <button
-                                type="button"
-                                className={`step-btn${step === 2 ? ' active' : ''}`}
-                                onClick={() => setStep(2)}
-                                disabled={
-                                    !newPatient.patient_name || !newPatient.patient_sex || !newPatient.patient_birth
-                                }
-                            >
-                                입원 정보
-                            </button>
                         </div>
                     </div>
 
@@ -262,7 +260,10 @@ const PatientAdd = () => {
                                                 newPatient.patient_sex === 'Male' ? ' selected' : ''
                                             }`}
                                         >
-                                            <span className="gender-icon male">&#9794;</span>
+                                            <div className="gender-content">
+                                                <span className="gender-icon male">&#9794;</span>
+                                                <span className="gender-text">남</span>
+                                            </div>
                                             <input
                                                 type="radio"
                                                 name="patient_sex"
@@ -271,14 +272,16 @@ const PatientAdd = () => {
                                                 onChange={handleInputChange}
                                                 required
                                             />
-                                            <span className="gender-text">남</span>
                                         </label>
                                         <label
                                             className={`gender-radio-label${
                                                 newPatient.patient_sex === 'Female' ? ' selected' : ''
                                             }`}
                                         >
-                                            <span className="gender-icon female">&#9792;</span>
+                                            <div className="gender-content">
+                                                <span className="gender-icon female">&#9792;</span>
+                                                <span className="gender-text">여</span>
+                                            </div>
                                             <input
                                                 type="radio"
                                                 name="patient_sex"
@@ -287,7 +290,6 @@ const PatientAdd = () => {
                                                 onChange={handleInputChange}
                                                 required
                                             />
-                                            <span className="gender-text">여</span>
                                         </label>
                                     </div>
                                 </div>
@@ -438,7 +440,15 @@ const PatientAdd = () => {
                                                             required
                                                             disabled={!selectedRoom}
                                                         />
-                                                        <span>{bed.bed_num}</span>
+                                                        <span
+                                                            style={{
+                                                                textAlign: 'center',
+                                                                display: 'block',
+                                                                width: '100%',
+                                                            }}
+                                                        >
+                                                            {bed.bed_num}
+                                                        </span>
                                                     </label>
                                                 );
                                             })
@@ -453,6 +463,7 @@ const PatientAdd = () => {
                                                 newPatient.patient_status === '무위험군' ? ' selected' : ''
                                             }`}
                                         >
+                                            <div className="risk-content">무위험군</div>
                                             <input
                                                 type="radio"
                                                 name="patient_status"
@@ -460,15 +471,14 @@ const PatientAdd = () => {
                                                 checked={newPatient.patient_status === '무위험군'}
                                                 onChange={handleInputChange}
                                                 required
-                                                className="risk-radio-input" // 클래스 이름 추가
                                             />
-                                            <span>무위험군</span>
                                         </label>
                                         <label
                                             className={`risk-radio-label mid${
                                                 newPatient.patient_status === '저위험군' ? ' selected' : ''
                                             }`}
                                         >
+                                            <div className="risk-content">저위험군</div>
                                             <input
                                                 type="radio"
                                                 name="patient_status"
@@ -476,15 +486,14 @@ const PatientAdd = () => {
                                                 checked={newPatient.patient_status === '저위험군'}
                                                 onChange={handleInputChange}
                                                 required
-                                                className="risk-radio-input" // 클래스 이름 추가
                                             />
-                                            <span>저위험군</span>
                                         </label>
                                         <label
                                             className={`risk-radio-label high${
                                                 newPatient.patient_status === '고위험군' ? ' selected' : ''
                                             }`}
                                         >
+                                            <div className="risk-content">고위험군</div>
                                             <input
                                                 type="radio"
                                                 name="patient_status"
@@ -492,9 +501,7 @@ const PatientAdd = () => {
                                                 checked={newPatient.patient_status === '고위험군'}
                                                 onChange={handleInputChange}
                                                 required
-                                                className="risk-radio-input" // 클래스 이름 추가
                                             />
-                                            <span>고위험군</span>
                                         </label>
                                     </div>
                                 </div>
@@ -502,11 +509,22 @@ const PatientAdd = () => {
                                     <span>보호자 전화</span>
                                     <input
                                         type="tel"
-                                        name="guardian_id"
-                                        value={newPatient.guardian_id}
+                                        name="guardian_tel"
+                                        value={newPatient.guardian_tel}
                                         onChange={handleInputChange}
                                         placeholder="010-0000-0000"
                                         pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
+                                    />
+                                </div>
+                                <div className="info-row">
+                                    <span>보호자 ID</span>
+                                    <input
+                                        type="text"
+                                        name="guardian_id"
+                                        value={newPatient.guardian_id}
+                                        onChange={handleInputChange}
+                                        placeholder="보호자 ID를 입력하세요"
+                                        required
                                     />
                                 </div>
                                 <div className="memo-info" style={{ height: memoHeight }}>
@@ -521,10 +539,10 @@ const PatientAdd = () => {
                                 </div>
                                 <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'space-between' }}>
                                     <button type="button" className="prev-step-btn" onClick={() => setStep(1)}>
-                                        ← 이전 단계
+                                        ← 기본 정보
                                     </button>
-                                    <button className="submit-button" type="submit">
-                                        등록
+                                    <button className="submit-button" onClick={handleSubmit}>
+                                        환자 등록
                                     </button>
                                 </div>
                             </div>
