@@ -254,11 +254,30 @@ const PatientAdd = () => {
                                 </div>
                                 <div className="info-row gender-row">
                                     <span>성별</span>
-                                    <div className="gender-radio-group">
+                                    <div
+                                        className="gender-radio-group"
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'flex-start',
+                                            width: '100%',
+                                            textAlign: 'left',
+                                        }}
+                                    >
                                         <label
                                             className={`gender-radio-label${
                                                 newPatient.patient_sex === 'Male' ? ' selected' : ''
                                             }`}
+                                            style={{
+                                                marginRight: '15px',
+                                                float: 'left',
+                                                minWidth: '120px',
+                                                height: '45px',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                padding: '10px 20px',
+                                                borderRadius: '10px',
+                                            }}
                                         >
                                             <div className="gender-content">
                                                 <span className="gender-icon male">&#9794;</span>
@@ -277,6 +296,17 @@ const PatientAdd = () => {
                                             className={`gender-radio-label${
                                                 newPatient.patient_sex === 'Female' ? ' selected' : ''
                                             }`}
+                                            style={{
+                                                marginRight: '15px',
+                                                float: 'left',
+                                                minWidth: '120px',
+                                                height: '45px',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                padding: '10px 20px',
+                                                borderRadius: '50px',
+                                            }}
                                         >
                                             <div className="gender-content">
                                                 <span className="gender-icon female">&#9792;</span>
@@ -371,7 +401,15 @@ const PatientAdd = () => {
                                 </div>
                                 <div className="info-row">
                                     <span>층수 선택</span>
-                                    <div className="floor-select-group">
+                                    <div
+                                        className="floor-select-group"
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'flex-start',
+                                            width: '100%',
+                                            textAlign: 'left',
+                                        }}
+                                    >
                                         {Array.from(
                                             new Set(rooms.map((room) => String(room.room_name).slice(0, 1)))
                                         ).map((floor) => (
@@ -385,6 +423,15 @@ const PatientAdd = () => {
                                                     setNewPatient((prev) => ({ ...prev, bed_id: '' }));
                                                     setSelectedFloor(floor);
                                                 }}
+                                                style={{
+                                                    marginRight: '10px',
+                                                    float: 'left',
+                                                    width: '60px',
+                                                    height: '36px',
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                }}
                                             >
                                                 {floor}층
                                             </button>
@@ -394,7 +441,15 @@ const PatientAdd = () => {
                                 <div className="info-row">
                                     <span>병실 선택</span>
                                     {selectedFloor ? (
-                                        <div className="room-select-group">
+                                        <div
+                                            className="room-select-group"
+                                            style={{
+                                                display: 'flex',
+                                                justifyContent: 'flex-start',
+                                                width: '100%',
+                                                textAlign: 'left',
+                                            }}
+                                        >
                                             {rooms
                                                 .filter((room) => String(room.room_name).startsWith(selectedFloor))
                                                 .map((room) => (
@@ -409,20 +464,61 @@ const PatientAdd = () => {
                                                             handleRoomChange(room.room_name);
                                                         }}
                                                         disabled={room.room_capacity === 0}
+                                                        style={{
+                                                            marginRight: '10px',
+                                                            float: 'left',
+                                                            width: '70px',
+                                                            height: '36px',
+                                                            display: 'flex',
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center',
+                                                        }}
                                                     >
                                                         {room.room_name}호{room.room_capacity === 0 ? ' (만실)' : ''}
                                                     </button>
                                                 ))}
                                         </div>
                                     ) : (
-                                        <div style={{ color: '#aaa', padding: '8px 0' }}>먼저 층수를 선택하세요</div>
+                                        <div
+                                            style={{
+                                                color: '#aaa',
+                                                padding: '8px 0',
+                                                textAlign: 'left',
+                                                width: '100%',
+                                                display: 'flex',
+                                                justifyContent: 'flex-start',
+                                                marginLeft: 0,
+                                            }}
+                                        >
+                                            먼저 층수를 선택하세요
+                                        </div>
                                     )}
                                 </div>
                                 <div className="info-row">
                                     <span>침대 번호</span>
-                                    <div className="bed-radio-group">
+                                    <div
+                                        className="bed-radio-group"
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'flex-start',
+                                            width: '100%',
+                                            textAlign: 'left',
+                                        }}
+                                    >
                                         {availableBeds.length === 0 ? (
-                                            <span style={{ color: '#aaa' }}>선택 가능한 침대 없음</span>
+                                            <div
+                                                style={{
+                                                    color: '#aaa',
+                                                    padding: '8px 0',
+                                                    textAlign: 'left',
+                                                    width: '100%',
+                                                    display: 'flex',
+                                                    justifyContent: 'flex-start',
+                                                    marginLeft: 0,
+                                                }}
+                                            >
+                                                선택 가능한 침대 없음
+                                            </div>
                                         ) : (
                                             availableBeds.map((bed) => {
                                                 const isSelected = String(newPatient.bed_id) === String(bed.bed_id);
@@ -430,6 +526,15 @@ const PatientAdd = () => {
                                                     <label
                                                         key={`${selectedRoom}-${bed.bed_num}`}
                                                         className={`bed-radio-label${isSelected ? ' selected' : ''}`}
+                                                        style={{
+                                                            marginRight: '10px',
+                                                            float: 'left',
+                                                            width: '60px',
+                                                            height: '36px',
+                                                            display: 'flex',
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center',
+                                                        }}
                                                     >
                                                         <input
                                                             type="radio"
@@ -440,15 +545,7 @@ const PatientAdd = () => {
                                                             required
                                                             disabled={!selectedRoom}
                                                         />
-                                                        <span
-                                                            style={{
-                                                                textAlign: 'center',
-                                                                display: 'block',
-                                                                width: '100%',
-                                                            }}
-                                                        >
-                                                            {bed.bed_num}
-                                                        </span>
+                                                        <span style={{ textAlign: 'center' }}>{bed.bed_num}</span>
                                                     </label>
                                                 );
                                             })
@@ -457,11 +554,28 @@ const PatientAdd = () => {
                                 </div>
                                 <div className="info-row">
                                     <span>위험도</span>
-                                    <div className="risk-radio-group">
+                                    <div
+                                        className="risk-radio-group"
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'flex-start',
+                                            width: '100%',
+                                            textAlign: 'left',
+                                        }}
+                                    >
                                         <label
                                             className={`risk-radio-label low${
                                                 newPatient.patient_status === '무위험군' ? ' selected' : ''
                                             }`}
+                                            style={{
+                                                marginRight: '10px',
+                                                float: 'left',
+                                                width: '100px',
+                                                height: '36px',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                            }}
                                         >
                                             <div className="risk-content">무위험군</div>
                                             <input
@@ -477,6 +591,15 @@ const PatientAdd = () => {
                                             className={`risk-radio-label mid${
                                                 newPatient.patient_status === '저위험군' ? ' selected' : ''
                                             }`}
+                                            style={{
+                                                marginRight: '10px',
+                                                float: 'left',
+                                                width: '100px',
+                                                height: '36px',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                            }}
                                         >
                                             <div className="risk-content">저위험군</div>
                                             <input
@@ -492,6 +615,15 @@ const PatientAdd = () => {
                                             className={`risk-radio-label high${
                                                 newPatient.patient_status === '고위험군' ? ' selected' : ''
                                             }`}
+                                            style={{
+                                                marginRight: '10px',
+                                                float: 'left',
+                                                width: '100px',
+                                                height: '36px',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                            }}
                                         >
                                             <div className="risk-content">고위험군</div>
                                             <input

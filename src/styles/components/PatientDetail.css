@@ -486,3 +486,36 @@
 .info-row:last-child {
     border-bottom: none;
 }
+.legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.legend-right {
+    align-items: flex-end; /* 오른쪽 정렬 */
+    text-align: right; /* 텍스트도 오른쪽 정렬 */
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 14px;
+    color: #333;
+}
+
+.red-circle {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+}
+
+.blue-circle {
+    width: 10px;
+    height: 10px;
+    background-color: blue;
+    border-radius: 50%;
+}

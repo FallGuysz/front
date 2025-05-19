@@ -434,9 +434,17 @@ const PatientDetail = () => {
                                 ))}
                             </div>
                         </div>
-                        <p style={{ textAlign: 'center' }}>&lt;통증부위&gt;</p>
+
                         <div>
-                            <br></br>
+                            <div className="legend legend-right">
+                                <div className="legend-item">
+                                    <div className="red-circle"></div>
+                                    <span>증상 부위 </span>
+                                    <div className="blue-circle"></div>
+                                    <span> 링거</span>
+                                </div>
+                                <div className="legend-item"></div>
+                            </div>
                         </div>
 
                         <div className="vital-signs-container">
