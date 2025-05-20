@@ -115,10 +115,17 @@
 /* 정보 행 스타일 수정 */
 .info-row {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem; /* 좌우 패딩 추가 */
+    padding: 0.25rem 0;
+    font-size: 14px;
     border-bottom: 1px solid #e2e8f0;
-    gap: 10rem;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 .info-row span:first-child {
@@ -127,7 +134,7 @@
     flex-shrink: 0;
     font-weight: 500;
     text-align: left;
-    padding-left: 0.5rem; /* 왼쪽 텍스트 패딩 추가 */
+    padding-left: 0.5rem;
 }
 
 .info-row span:last-child {
@@ -138,13 +145,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: right;
-    padding-right: 1rem; /* 오른쪽 텍스트 패딩 추가 */
+    padding-right: 1rem;
 }
 
 /* 성별 표시 스타일 수정 */
 .info-row span:last-child span {
-    padding: 0; /* 패딩 제거 */
-    margin: 0; /* 마진도 제거 */
+    padding: 0;
+    margin: 0;
 }
 
 /* 입력 필드도 동일한 패딩 적용 */
@@ -156,7 +163,7 @@
     border-radius: 4px;
     font-size: 14px;
     text-align: right;
-    margin-right: 1rem; /* 오른쪽 마진 추가 */
+    margin-right: 1rem;
 }
 
 /* Body Diagram 스타일 */
@@ -264,18 +271,19 @@
 .memo-info {
     display: flex;
     flex-direction: column;
-    height: 100%; /* 컨테이너 높이를 100%로 설정 */
+    flex-grow: 1;
+    margin-top: 0;
 }
 
 .memo-info h3 {
-    margin-bottom: 0.5rem; /* 헤더 아래 여백 축소 */
+    margin-bottom: 0.5rem;
 }
 
 .memo-info textarea {
-    flex-grow: 1; /* 남은 공간을 모두 차지하도록 설정 */
-    min-height: 120px; /* 최소 높이 설정 */
-    margin-top: 0.5rem; /* 위쪽 여백 추가 */
-    resize: none; /* 크기 조절 비활성화 */
+    flex-grow: 1;
+    min-height: 250px;
+    margin-top: 0.5rem;
+    resize: none;
     padding: 1rem;
     background: #f8fafc;
     border: 1px solid #e2e8f0;
@@ -283,9 +291,9 @@
 }
 
 .memo-content {
-    flex-grow: 1; /* 남은 공간을 모두 차지하도록 설정 */
-    min-height: 120px; /* 최소 높이 설정 */
-    margin-top: 0.5rem; /* 위쪽 여백 추가 */
+    flex-grow: 1;
+    min-height: 150px;
+    margin-top: 0.5rem;
     padding: 1rem;
     background: #f8fafc;
     border-radius: 4px;
@@ -319,7 +327,7 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    width: 45%; /* 추가: 각 그룹의 너비 설정 */
+    width: 45%;
 }
 
 /* 구분선 스타일 수정 */
@@ -327,9 +335,9 @@
     width: 1px;
     height: 24px;
     background-color: #e2e8f0;
-    position: absolute; /* 변경: absolute 포지셔닝으로 변경 */
-    left: 50%; /* 추가: 가운데 정렬 */
-    transform: translateX(-50%); /* 추가: 정확한 가운데 정렬 */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 /* 라벨 스타일 */
@@ -391,8 +399,8 @@
 }
 
 .profile-image-container {
-    width: 120px; /* 크기 증가 */
-    height: 120px; /* 크기 증가 */
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     overflow: hidden;
     background: #f1f5f9;
@@ -419,12 +427,12 @@
 }
 
 .profile-placeholder svg {
-    width: 60px; /* 아이콘 크기 증가 */
-    height: 60px; /* 아이콘 크기 증가 */
+    width: 60px;
+    height: 60px;
 }
 
 .profile-upload-button {
-    display: none; /* 파일 업로드 버튼 숨기기 */
+    display: none;
 }
 
 .vital-signs {
@@ -462,8 +470,9 @@
 .hospital-info {
     background: white;
     border-radius: 8px;
-    padding: 1.5rem;
+    padding: 1rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 0;
 }
 
 .summary-row {
@@ -474,18 +483,6 @@
     text-align: center;
 }
 
-.info-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0;
-    font-size: 14px;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-.info-row:last-child {
-    border-bottom: none;
-}
 .legend {
     display: flex;
     flex-direction: column;
@@ -494,8 +491,8 @@
 }
 
 .legend-right {
-    align-items: flex-end; /* 오른쪽 정렬 */
-    text-align: right; /* 텍스트도 오른쪽 정렬 */
+    align-items: flex-end;
+    text-align: right;
 }
 
 .legend-item {

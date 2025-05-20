@@ -745,9 +745,9 @@ room-status.normal {
 }
 
 .floor-tab.active {
-    background-color: #2563eb;
+    background-color: #194890;
     color: white;
-    border-color: #2563eb;
+    border-color: #194890;
     box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
     transform: translateY(-1px);
 }

@@ -34,7 +34,7 @@
 }
 
 .back-button:hover {
-    color: #3498db;
+    color: #194890;
 }
 
 .patient-add-form {
@@ -80,8 +80,8 @@
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+    border-color: #194890;
+    box-shadow: 0 0 0 2px rgba(25, 72, 144, 0.1);
 }
 
 .file-upload-container {
@@ -359,7 +359,7 @@
     font-size: 16px;
     border-radius: 50px;
     border: 2px solid #e2e8f0;
-    background-color: #f8fafc;
+    background-color: #f0f7ff; /* 더 연한 파란색 배경으로 변경 */
     color: #64748b;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -384,7 +384,7 @@
 
 /* 남성 아이콘 색상 */
 .gender-radio-label .gender-icon.male {
-    color: #3498db;
+    color: #194890;
 }
 
 /* 여성 아이콘 색상 */
@@ -405,58 +405,58 @@
 
 /* 선택된 남성 라벨 */
 .gender-radio-label.selected {
-    color: white !important;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+    color: #194890 !important;
+    box-shadow: 0 2px 5px rgba(25, 72, 144, 0.1) !important;
 }
 
 /* 남성이 선택되었을 때 */
 .gender-radio-label input[value='Male']:checked ~ .gender-text,
 .gender-radio-label input[value='Male']:checked ~ .gender-icon {
-    color: white !important;
+    color: #194890 !important;
 }
 
 .gender-radio-label input[value='Male']:checked,
 .gender-radio-label:has(input[value='Male']:checked) {
-    background-color: #85c1e9 !important;
-    border-color: #3498db !important;
-    color: white !important;
+    background-color: rgba(25, 72, 144, 0.1) !important; /* 투명도 추가 */
+    border-color: #194890 !important;
+    color: #194890 !important;
 }
 
 /* 여성이 선택되었을 때 */
 .gender-radio-label input[value='Female']:checked ~ .gender-text,
 .gender-radio-label input[value='Female']:checked ~ .gender-icon {
-    color: white !important;
+    color: #e84393 !important;
 }
 
 .gender-radio-label input[value='Female']:checked,
 .gender-radio-label:has(input[value='Female']:checked) {
-    background-color: #f5b7d1 !important;
+    background-color: rgba(232, 67, 147, 0.1) !important; /* 투명도 추가 */
     border-color: #e84393 !important;
-    color: white !important;
+    color: #e84393 !important;
 }
 
 /* 선택된 라벨 스타일 (JavaScript에서 추가되는 클래스) */
 .gender-radio-label.selected {
-    background-color: #85c1e9 !important;
-    border-color: #3498db !important;
-    color: white !important;
-    box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3) !important;
+    background-color: rgba(25, 72, 144, 0.1) !important;
+    border-color: #194890 !important;
+    color: #194890 !important;
+    box-shadow: 0 2px 5px rgba(25, 72, 144, 0.1) !important;
 }
 
 .gender-radio-label.selected .gender-icon,
 .gender-radio-label.selected .gender-text {
-    color: white !important;
+    color: #194890 !important;
     font-weight: 900 !important;
 }
 
 /* Male과 Female 값에 따라 다른 배경색 적용 */
 .gender-radio-label.selected:has(input[value='Male']) {
-    background-color: #85c1e9 !important;
-    border-color: #3498db !important;
+    background-color: rgba(25, 72, 144, 0.1) !important;
+    border-color: #194890 !important;
 }
 
 .gender-radio-label.selected:has(input[value='Female']) {
-    background-color: #f5b7d1 !important;
+    background-color: rgba(232, 67, 147, 0.1) !important;
     border-color: #e84393 !important;
 }
 
@@ -515,9 +515,9 @@
 }
 
 .bed-radio-label:hover {
-    border-color: #3498db;
+    border-color: #194890;
     background: #ebf8ff;
-    color: #3498db;
+    color: #194890;
 }
 
 .bed-radio-label input[type='radio']:checked + span {
@@ -525,14 +525,14 @@
 }
 
 .bed-radio-label input[type='radio']:checked ~ .bed-radio-label {
-    border-color: #3498db;
-    background: #3498db;
+    border-color: #194890;
+    background: #194890;
     color: #fff;
 }
 
 .bed-radio-label.selected {
-    border-color: #3498db;
-    background: #3498db;
+    border-color: #194890;
+    background: #194890;
     color: #fff;
 }
 
@@ -583,9 +583,9 @@
 
 .floor-btn.selected,
 .room-btn.selected {
-    background: #3498db;
+    background: #194890;
     color: #fff;
-    border-color: #3498db;
+    border-color: #194890;
 }
 
 .room-btn.disabled,
@@ -599,7 +599,7 @@
 /* 예시: 버튼 스타일 */
 .next-step-btn,
 .prev-step-btn {
-    background: #3498db;
+    background: #194890;
     color: #fff;
     border: none;
     border-radius: 6px;
@@ -615,7 +615,7 @@
 
 .next-step-btn:hover,
 .prev-step-btn:hover {
-    background: #2980b9;
+    background: #143a75;
     transform: translateY(-1px);
 }
 
@@ -640,7 +640,7 @@
 }
 
 .step-btn.active {
-    background: #3498db !important;
+    background: #194890 !important;
     color: #fff !important;
 }
 
@@ -665,7 +665,7 @@
 }
 
 .step-arrow-btn {
-    background: #3498db;
+    background: #194890;
     color: #fff;
     border: none;
     border-radius: 50%;
@@ -687,14 +687,14 @@
 }
 
 .step-arrow-btn:hover {
-    background: #2980b9;
+    background: #143a75;
     transform: translateY(-1px);
 }
 
 .step-label {
     font-size: 1rem;
     font-weight: 600;
-    color: #3498db;
+    color: #194890;
     min-width: 80px;
     text-align: center;
 }
@@ -823,7 +823,7 @@
     height: 120px !important;
     border-radius: 50% !important;
     overflow: hidden !important;
-    border: 2px solid #3498db !important;
+    border: 2px solid #194890 !important;
     background-color: #f8fafc !important;
     display: flex !important;
     align-items: center !important;
@@ -847,7 +847,7 @@
 .profile-upload-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #194890;
+    background-color: #194890 !important;
     color: white;
     border-radius: 4px;
     cursor: pointer;
@@ -858,7 +858,7 @@
 }
 
 .profile-upload-button:hover {
-    background-color: #143a75;
+    background-color: #143a75 !important;
 }
 
 .memo-info {
@@ -992,6 +992,6 @@
 /* 모든 브라우저에서 select 포커스 일관성 유지 */
 .info-row select:focus {
     outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+    border-color: #194890;
+    box-shadow: 0 0 0 2px rgba(25, 72, 144, 0.1);
 }
